@@ -1,22 +1,21 @@
 package com.example.bookAPI.domain;
 
+import com.example.bookAPI.domain.common.TimeEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name="member")
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class Member {
+public class Member extends TimeEntity {
     @Id
     @Column(name="member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,12 +30,6 @@ public class Member {
     @Column(length = 500)
     private String password;
 
-    @CreationTimestamp
-    private LocalDateTime createDateTime;
-
-    @CreationTimestamp
-    private LocalDateTime updateDateTime;
-
     @Column(name = "activated")
     private boolean activated;
 
@@ -47,6 +40,35 @@ public class Member {
     )
     Set<Role> roles = new HashSet<>();
 
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "member_category",
+            joinColumns = @JoinColumn(name = "member_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    Set<Category> categories = new HashSet<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberBook> memberBooks = new ArrayList<>();
+
+    @OneToMany(mappedBy="member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy="member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<PostTag> postTag = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    @JsonIgnore
+    private List<BookShare> bookShareList = new ArrayList<>();
+
+    @OneToOne(mappedBy = "member")
+    private RefreshToken refreshToken;
+
+    @OneToOne(mappedBy = "member")
+    private Login login;
+
     @Override
     public String toString() {
         return "Member{" +
@@ -54,8 +76,6 @@ public class Member {
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
-                ", createDateTime=" + createDateTime +
-                ", updateDateTime=" + updateDateTime +
                 ", activated=" + activated +
                 '}';
     }

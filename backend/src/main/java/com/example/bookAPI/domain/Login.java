@@ -6,21 +6,21 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-
 @Entity
-@Table(name="refresh_token")
+@Table(name="login")
 @NoArgsConstructor
 @Setter
 @Getter
-public class RefreshToken {
+public class Login {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 20)
+    private String name;
+
     @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @Column(columnDefinition = "VARCHAR(1000)")
-    private String value;
 }
+
