@@ -1,6 +1,7 @@
 package com.example.bookAPI.domain;
 
 import com.example.bookAPI.domain.common.ContentEntity;
+import com.example.bookAPI.domain.common.TimeEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,23 +9,24 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "post_tag")
+@Table(name = "member_noti")
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostTag extends ContentEntity {
+public class MemberNoti extends TimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_tag_id")
     private Long id;
-
-    private String name;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "notification_id")
+    private Notification notification;
+
+    @Column(name = "is_read", columnDefinition = "boolean default false")
+    private boolean isRead;
 }

@@ -15,6 +15,7 @@ import javax.persistence.*;
 public class PostCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "post_category_id")
     private Long id;
 
     @Column(name = "post_type")

@@ -14,7 +14,8 @@ import javax.persistence.*;
 public class Login {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "login_id")
+    private Long login_id;
 
     @Column(length = 20)
     private String name;

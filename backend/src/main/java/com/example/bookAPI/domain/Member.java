@@ -17,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Member extends TimeEntity {
     @Id
-    @Column(name="member_id")
+    @Column(name="member_id", insertable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
@@ -58,10 +58,6 @@ public class Member extends TimeEntity {
 
     @OneToMany(mappedBy = "member")
     private List<PostTag> postTag = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    @JsonIgnore
-    private List<BookShare> bookShareList = new ArrayList<>();
 
     @OneToOne(mappedBy = "member")
     private RefreshToken refreshToken;

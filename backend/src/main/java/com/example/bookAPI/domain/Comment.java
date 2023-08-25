@@ -9,16 +9,16 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "review")
+@Table(name = "comment")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Review extends ContentEntity {
+public class Comment extends ContentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "review_id")
-    private Long reviewId;
+    @Column(name = "comment_id")
+    private Long commentId;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,14 +27,15 @@ public class Review extends ContentEntity {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id", nullable = false)
-    private Book book;
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
 
     @Column(nullable = false, length = 3000)
     private String content;
 
-    @Column(nullable = false, name = "rating", columnDefinition = "DECIMAL(2, 1) CHECK (rating BETWEEN 0.5 AND 5)")
-    private BigDecimal rating;
+    @ManyToOne
+    @JoinColumn(name = "parent_comment_id")
+    private Comment parentComment;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "content_id")

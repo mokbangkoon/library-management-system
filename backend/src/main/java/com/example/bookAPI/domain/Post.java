@@ -42,4 +42,8 @@ public class Post extends ContentEntity {
 
     @OneToMany(mappedBy = "post")
     private List<PostTag> postTag = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "content_id")
+    private Content contents;
 }

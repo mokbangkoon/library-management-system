@@ -15,7 +15,8 @@ import javax.persistence.*;
 public class PostStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "post_status_id")
+    private Long post_status_id;
 
     @Column(name = "post_status")
     @Enumerated(EnumType.STRING)
