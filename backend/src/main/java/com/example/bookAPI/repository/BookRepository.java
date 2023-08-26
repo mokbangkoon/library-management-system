@@ -2,6 +2,7 @@ package com.example.bookAPI.repository;
 
 import com.example.bookAPI.domain.Book;
 import com.example.bookAPI.dto.book.BookCountPerCategoryResponseDto;
+import com.example.bookAPI.dto.book.BookPurchaseResponseDto;
 import com.example.bookAPI.dto.book.BookSearchResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,15 +28,14 @@ public interface BookRepository extends JpaRepository<Book,Long> {
                     "WHERE b.title LIKE %:title% OR b.subtitle LIKE %:title%")
     Page<BookSearchResponseDto> findByTitleContaining(@Param("title") String title, Pageable pageable);
 
-    @Query(value = "SELECT new com.example.bookAPI.dto.book.BookSearchResponseDto(b.bookId, b.title, b.subtitle, b.writer, b.publisher, b.publishDate, b.img, b.isEbook, b.count," +
-            "coalesce(avg(br.rating),0))" +
+    @Query(value = "SELECT new com.example.bookAPI.dto.book.BookPurchaseResponseDto(b.bookId AS id, b.title, b.writer, b.img, " +
+            "CONCAT(main.name, ' > ', sub.name, ' > ', detail.name) AS categories) " +
             "FROM Book b " +
-            "LEFT JOIN b.reviews br " +
-            "GROUP BY b.bookId",
-            countQuery = "SELECT COUNT(DISTINCT b.bookId) " +
-                    "FROM Book b " +
-                    "LEFT JOIN b.reviews br ")
-    Page<BookSearchResponseDto> findTopNBooksOrderByCreateDateTimeDesc(Pageable pageable);
+            "JOIN b.category detail " +
+            "LEFT OUTER JOIN detail.parentCategory sub " +
+            "LEFT OUTER JOIN sub.parentCategory main "
+    )
+    Page<BookPurchaseResponseDto> findBookByPurchasedOrder(Pageable pageable);
 
     @Query(value = "SELECT new com.example.bookAPI.dto.book.BookSearchResponseDto(b.bookId, b.title, b.subtitle, b.writer, b.publisher, b.publishDate, b.img, b.isEbook, b.count," +
             "coalesce(avg(br.rating),0))" +
