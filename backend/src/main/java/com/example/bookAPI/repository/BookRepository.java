@@ -1,10 +1,12 @@
 package com.example.bookAPI.repository;
 
 import com.example.bookAPI.domain.Book;
+import com.example.bookAPI.dto.book.BookBestResponseDto;
 import com.example.bookAPI.dto.book.BookCountPerCategoryResponseDto;
 import com.example.bookAPI.dto.book.BookPurchaseResponseDto;
 import com.example.bookAPI.dto.book.BookSearchResponseDto;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -36,6 +38,16 @@ public interface BookRepository extends JpaRepository<Book,Long> {
             "LEFT OUTER JOIN sub.parentCategory main "
     )
     Page<BookPurchaseResponseDto> findBookByPurchasedOrder(Pageable pageable);
+
+    @Query(value = "SELECT new com.example.bookAPI.dto.book.BookBestResponseDto(b.bookId AS id, b.title, b.writer, b.img) " +
+            "FROM Book b " +
+            "JOIN b.reviews r " +
+            "JOIN b.views v " +
+            "GROUP BY b.bookId " +
+            "ORDER BY (count(distinct v.viewId) * 4 + avg (r.rating) * 6) DESC"
+    )
+    Page<BookBestResponseDto> findBookByBestOrder(PageRequest pageable);
+
 
     @Query(value = "SELECT new com.example.bookAPI.dto.book.BookSearchResponseDto(b.bookId, b.title, b.subtitle, b.writer, b.publisher, b.publishDate, b.img, b.isEbook, b.count," +
             "coalesce(avg(br.rating),0))" +
@@ -87,4 +99,5 @@ public interface BookRepository extends JpaRepository<Book,Long> {
 
     @Query("SELECT b FROM Book b INNER JOIN b.reviews WHERE b.bookId IN (:bookIds)")
     List<Book> findAllById(@Param("bookIds") List<Long> bookIds);
+
 }

@@ -49,6 +49,21 @@ public class BookController {
         return new BookPurchaseResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
     }
 
+    @Operation(summary = "베스트 책", description = "베스트 선정된 책 리스트 반환")
+    @GetMapping("/best")
+    public BookBestResult getBestBooks(
+            @Parameter(description = "조회 페이지", example = "1")
+            @RequestParam(value = "page", defaultValue = "1", required = false) int page,
+            @Parameter(description = "조회 사이즈", example = "10")
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size
+    ){
+        PageRequest pageable;
+        pageable = PageRequest.of(page-1, size);
+
+        Page<BookBestResponseDto> resultPage = bookService.getBestBooks(pageable);
+        return new BookBestResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
+    }
+
     @Operation(summary = "카테고리 별 책 리스트 조회", description = "최 상위 카테고리로 책 리스트 반환")
     @GetMapping("/category/{categoryId}")
     public BookSearchResult getBooksByCategory(
