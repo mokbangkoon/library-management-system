@@ -1,9 +1,6 @@
 package com.example.bookAPI.controller;
 
-import com.example.bookAPI.dto.book.BookCountPerCategoryResponseDto;
-import com.example.bookAPI.dto.book.BookSaveRequestDto;
-import com.example.bookAPI.dto.book.BookSearchResponseDto;
-import com.example.bookAPI.dto.book.BookSearchResult;
+import com.example.bookAPI.dto.book.*;
 import com.example.bookAPI.service.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
@@ -37,22 +34,19 @@ public class BookController {
         return new BookSearchResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
     }
 
-    @Operation(summary = "가장 최근에 구매한 책", description = "최근 구매한 책 Top N 반환")
+    @Operation(summary = "가장 최근에 구매한 책", description = "최근 구매한 책 리스트 반환")
     @GetMapping("/purchased")
-    public BookSearchResult getPurchasedBooks(
-            @Parameter(description = "상위 조회 갯수", example = "10", required = false)  @RequestParam(value = "topSize", required = false) Integer topSize,
-            @Parameter(description = "조회 페이지", example = "0")  @RequestParam(value = "page", defaultValue = "1" , required = false) int page,
-            @Parameter(description = "조회 사이즈", example = "10")  @RequestParam(value = "size", defaultValue = "10" , required = false) int size
+    public BookPurchaseResult getPurchasedBooks(
+            @Parameter(description = "조회 페이지", example = "1")
+            @RequestParam(value = "page", defaultValue = "1", required = false) int page,
+            @Parameter(description = "조회 사이즈", example = "5")
+            @RequestParam(value = "size", defaultValue = "5", required = false) int size
     ){
         PageRequest pageable;
-        if (topSize!=null) {
-            pageable = PageRequest.of(0, topSize, Sort.by(Sort.Direction.DESC, "createDateTime"));
-        } else {
-            pageable = PageRequest.of(page-1, size, Sort.by(Sort.Direction.DESC, "createDateTime"));
-        }
+        pageable = PageRequest.of(page-1, size, Sort.by(Sort.Direction.DESC, "createDateTime"));
 
-        Page<BookSearchResponseDto> resultPage = bookService.getPurchasedBooks(pageable);
-        return new BookSearchResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
+        Page<BookPurchaseResponseDto> resultPage = bookService.getPurchasedBooks(pageable);
+        return new BookPurchaseResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
     }
 
     @Operation(summary = "카테고리 별 책 리스트 조회", description = "최 상위 카테고리로 책 리스트 반환")

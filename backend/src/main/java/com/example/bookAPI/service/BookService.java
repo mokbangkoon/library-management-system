@@ -4,6 +4,7 @@ import com.example.bookAPI.domain.Book;
 import com.example.bookAPI.domain.Category;
 import com.example.bookAPI.dto.Enum.CategoryType;
 import com.example.bookAPI.dto.book.BookCountPerCategoryResponseDto;
+import com.example.bookAPI.dto.book.BookPurchaseResponseDto;
 import com.example.bookAPI.dto.book.BookSaveRequestDto;
 import com.example.bookAPI.dto.book.BookSearchResponseDto;
 import com.example.bookAPI.repository.BookRepository;
@@ -83,8 +84,9 @@ public class BookService {
         return bookRepository.findById(bookId);
     }
 
-    public Page<BookSearchResponseDto> getPurchasedBooks(Pageable pageable) {
-        return bookRepository.findTopNBooksOrderByCreateDateTimeDesc(pageable);
+    @Transactional(readOnly = true)
+    public Page<BookPurchaseResponseDto> getPurchasedBooks(Pageable pageable) {
+        return bookRepository.findBookByPurchasedOrder(pageable);
     }
 
     public String getCategoryName(int id) {
