@@ -3,14 +3,12 @@ package com.example.bookAPI.service;
 import com.example.bookAPI.domain.Book;
 import com.example.bookAPI.domain.Category;
 import com.example.bookAPI.dto.Enum.CategoryType;
-import com.example.bookAPI.dto.book.BookCountPerCategoryResponseDto;
-import com.example.bookAPI.dto.book.BookPurchaseResponseDto;
-import com.example.bookAPI.dto.book.BookSaveRequestDto;
-import com.example.bookAPI.dto.book.BookSearchResponseDto;
+import com.example.bookAPI.dto.book.*;
 import com.example.bookAPI.repository.BookRepository;
 import com.example.bookAPI.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,6 +87,11 @@ public class BookService {
         return bookRepository.findBookByPurchasedOrder(pageable);
     }
 
+    @Transactional(readOnly = true)
+    public Page<BookBestResponseDto> getBestBooks(PageRequest pageable) {
+        return bookRepository.findBookByBestOrder(pageable);
+    }
+
     public String getCategoryName(int id) {
         for (CategoryType ct : CategoryType.values()) {
             if (ct.getId() == id) {
@@ -115,6 +118,4 @@ public class BookService {
         String categoryName = getCategoryName(categoryId);
         return bookRepository.countBySubCategory(categoryName);
     }
-
-
 }
