@@ -1,19 +1,19 @@
-package com.example.bookAPI.dto.book;
+package com.example.bookAPI.dto.book.best;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class BookPurchaseResult {
+public class BookBestResult {
 
-    private List<BookPurchaseResponseDto> books;
+    private List<BookBestResponseDto> books;
     private int totalPage;
     private long totalCount;
     private int currentPage;
     private boolean isLastPage;
 
-    public BookPurchaseResult(List<BookPurchaseResponseDto> books, int totalPage, long totalCount, int currentPage, boolean isLastPage) {
+    public BookBestResult(List<BookBestResponseDto> books, int totalPage, long totalCount, int currentPage, boolean isLastPage) {
         this.books = books;
         this.totalPage = totalPage;
         this.totalCount = totalCount;

@@ -1,9 +1,15 @@
 package com.example.bookAPI.controller;
 
+import com.example.bookAPI.dto.Pagination;
 import com.example.bookAPI.dto.book.*;
+import com.example.bookAPI.dto.book.best.BookBestResponseDto;
+import com.example.bookAPI.dto.book.best.BookBestResult;
+import com.example.bookAPI.dto.book.purchase.BookPurchaseResponseDto;
+import com.example.bookAPI.dto.book.purchase.BookPurchaseResult;
+import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResponseDto;
+import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResult;
 import com.example.bookAPI.service.BookService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +68,24 @@ public class BookController {
 
         Page<BookBestResponseDto> resultPage = bookService.getBestBooks(pageable);
         return new BookBestResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
+    }
+
+    @Operation(summary = "공유한 책과 찾는 책", description = "공유 및 찾는 책 리스트 반환")
+    @GetMapping("/shareAndFind")
+    public BookShareAndFindResult getShareAndFindBooks(
+            @Parameter(description = "조회 페이지", example = "1")
+            @RequestParam(value = "page", defaultValue = "1", required = false) int page,
+            @Parameter(description = "조회 사이즈", example = "6")
+            @RequestParam(value = "size", defaultValue = "6", required = false) int size
+    ){
+        PageRequest pageable;
+        pageable = PageRequest.of(page-1, size);
+
+        Page<BookShareAndFindResponseDto> sharePage = bookService.getShareBooks(pageable);
+        Pagination sharePageInfo = new Pagination(sharePage.getTotalPages(), sharePage.getTotalElements(), sharePage.getNumber() + 1, sharePage.isLast());
+        Page<BookShareAndFindResponseDto> findPage = bookService.getFindBooks(pageable);
+        Pagination findPageInfo = new Pagination(findPage.getTotalPages(), findPage.getTotalElements(), findPage.getNumber() + 1, findPage.isLast());
+        return new BookShareAndFindResult(sharePage.getContent(), sharePageInfo, findPage.getContent(), findPageInfo);
     }
 
     @Operation(summary = "카테고리 별 책 리스트 조회", description = "최 상위 카테고리로 책 리스트 반환")
