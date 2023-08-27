@@ -8,7 +8,7 @@ const LoginButton = () => {
   return (
     <div>
       <button
-        className="bg-[#242424] text-[#fff] text-sm font-M"
+        className="bg-[#242424] text-[#fff] text-sm font-M rounded-md w-16 h-8"
         onClick={clickLogin}
       >
         로그인
