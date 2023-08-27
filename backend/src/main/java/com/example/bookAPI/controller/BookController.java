@@ -4,6 +4,8 @@ import com.example.bookAPI.dto.Pagination;
 import com.example.bookAPI.dto.book.*;
 import com.example.bookAPI.dto.book.best.BookBestResponseDto;
 import com.example.bookAPI.dto.book.best.BookBestResult;
+import com.example.bookAPI.dto.book.category.BookTeamCategoryResponseDto;
+import com.example.bookAPI.dto.book.category.BookTeamCategoryResult;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseResponseDto;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseResult;
 import com.example.bookAPI.dto.book.review.BookReviewResponseDto;
@@ -117,6 +119,18 @@ public class BookController {
 
         Page<BookReviewResponseDto> resultPage = bookService.getReviewBooks(pageable);
         return new BookReviewResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
+    }
+
+    @Operation(summary = "팀 별 책 리스트 조회", description = "팀 별 등록한 책 리스트 반환")
+    @GetMapping("/team/{teamId}")
+    public BookTeamCategoryResult getBooksByTeam(
+            @PathVariable(name = "teamId", required = true) Long teamId,
+            @Parameter(description = "조회 페이지", example = "1")  @RequestParam(value = "page", defaultValue = "1") int page,
+            @Parameter(description = "조회 사이즈", example = "8")  @RequestParam(value = "size", defaultValue = "8") int size
+    ){
+        PageRequest pageable = PageRequest.of(page-1, size);
+        Page<BookTeamCategoryResponseDto> resultPage = bookService.getBooksByTeam(teamId, pageable);
+        return new BookTeamCategoryResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
     }
 
     @Operation(summary = "카테고리 별 책 갯수 조회", description = "카테고리에 해당하는 책 전체 갯수 리스트 반환")
