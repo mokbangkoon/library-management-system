@@ -3,6 +3,7 @@ package com.example.bookAPI.repository;
 import com.example.bookAPI.domain.Book;
 import com.example.bookAPI.dto.book.best.BookBestResponseDto;
 import com.example.bookAPI.dto.book.BookCountPerCategoryResponseDto;
+import com.example.bookAPI.dto.book.category.BookTeamCategoryResponseDto;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseResponseDto;
 import com.example.bookAPI.dto.book.BookSearchResponseDto;
 import com.example.bookAPI.dto.book.review.BookReviewResponseDto;
@@ -75,7 +76,16 @@ public interface BookRepository extends JpaRepository<Book,Long> {
             "GROUP BY b.bookId " +
             "ORDER BY MIN(r.createDateTime) desc"
     )
-    Page<BookReviewResponseDto> getBookReviews(PageRequest pageable);
+    Page<BookReviewResponseDto> findBookByReviews(PageRequest pageable);
+
+    @Query(value = "SELECT new com.example.bookAPI.dto.book.category.BookTeamCategoryResponseDto(b.bookId AS id, b.title, b.writer, b.img) " +
+            "FROM Book b " +
+            "JOIN b.memberBooks mb " +
+            "JOIN mb.member m " +
+            "WHERE m.team.teamId = :teamId " +
+            "GROUP BY b.bookId "
+    )
+    Page<BookTeamCategoryResponseDto> findBookByTeamCategory(@Param("teamId") Long teamId, PageRequest pageable);
 
     @Query(value = "SELECT new com.example.bookAPI.dto.book.BookSearchResponseDto(b.bookId, b.title, b.subtitle, b.writer, b.publisher, b.publishDate, b.img, b.isEbook, b.count," +
             "coalesce(avg(br.rating),0))" +
