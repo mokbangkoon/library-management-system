@@ -5,6 +5,7 @@ import com.example.bookAPI.dto.book.best.BookBestResponseDto;
 import com.example.bookAPI.dto.book.BookCountPerCategoryResponseDto;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseResponseDto;
 import com.example.bookAPI.dto.book.BookSearchResponseDto;
+import com.example.bookAPI.dto.book.review.BookReviewResponseDto;
 import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -63,6 +64,18 @@ public interface BookRepository extends JpaRepository<Book,Long> {
             "WHERE bs.bookStatus = 3"
     )
     Page<BookShareAndFindResponseDto> findBookByFound(PageRequest pageable);
+
+    @Query(value = "SELECT new com.example.bookAPI.dto.book.review.BookReviewResponseDto(b.bookId AS id, b.title, b.writer, b.img, " +
+            "MIN(r.content) AS content, " +
+            "MIN(r.member.name) AS name," +
+            "MIN(r.rating) AS rating," +
+            "MIN(r.createDateTime) AS createDateTime) " +
+            "FROM Book b " +
+            "JOIN b.reviews r " +
+            "GROUP BY b.bookId " +
+            "ORDER BY MIN(r.createDateTime) desc"
+    )
+    Page<BookReviewResponseDto> getBookReviews(PageRequest pageable);
 
     @Query(value = "SELECT new com.example.bookAPI.dto.book.BookSearchResponseDto(b.bookId, b.title, b.subtitle, b.writer, b.publisher, b.publishDate, b.img, b.isEbook, b.count," +
             "coalesce(avg(br.rating),0))" +
