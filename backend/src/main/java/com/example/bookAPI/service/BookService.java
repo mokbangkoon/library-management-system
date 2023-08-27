@@ -6,6 +6,7 @@ import com.example.bookAPI.dto.Enum.CategoryType;
 import com.example.bookAPI.dto.book.*;
 import com.example.bookAPI.dto.book.best.BookBestResponseDto;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseResponseDto;
+import com.example.bookAPI.dto.book.review.BookReviewResponseDto;
 import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResponseDto;
 import com.example.bookAPI.repository.BookRepository;
 import com.example.bookAPI.repository.CategoryRepository;
@@ -103,6 +104,11 @@ public class BookService {
     @Transactional(readOnly = true)
     public Page<BookShareAndFindResponseDto> getFindBooks(PageRequest pageable) {
         return bookRepository.findBookByFound(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<BookReviewResponseDto> getReviewBooks(PageRequest pageable) {
+        return bookRepository.getBookReviews(pageable);
     }
 
     public String getCategoryName(int id) {

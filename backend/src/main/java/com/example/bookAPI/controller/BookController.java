@@ -6,6 +6,8 @@ import com.example.bookAPI.dto.book.best.BookBestResponseDto;
 import com.example.bookAPI.dto.book.best.BookBestResult;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseResponseDto;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseResult;
+import com.example.bookAPI.dto.book.review.BookReviewResponseDto;
+import com.example.bookAPI.dto.book.review.BookReviewResult;
 import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResponseDto;
 import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResult;
 import com.example.bookAPI.service.BookService;
@@ -100,6 +102,21 @@ public class BookController {
         PageRequest pageable = PageRequest.of(page-1, size , Sort.by(Sort.Direction.DESC, "createDateTime"));
         Page<BookSearchResponseDto> resultPage = bookService.getBooksByCategory(categoryId, title, subCategory, pageable);
         return new BookSearchResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
+    }
+
+    @Operation(summary = "최근 리뷰 달린 책", description = "최근 리뷰 받은 책 리스트 반환")
+    @GetMapping("/review")
+    public BookReviewResult getReviewBooks(
+            @Parameter(description = "조회 페이지", example = "1")
+            @RequestParam(value = "page", defaultValue = "1", required = false) int page,
+            @Parameter(description = "조회 사이즈", example = "4")
+            @RequestParam(value = "size", defaultValue = "4", required = false) int size
+    ){
+        PageRequest pageable;
+        pageable = PageRequest.of(page-1, size);
+
+        Page<BookReviewResponseDto> resultPage = bookService.getReviewBooks(pageable);
+        return new BookReviewResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
     }
 
     @Operation(summary = "카테고리 별 책 갯수 조회", description = "카테고리에 해당하는 책 전체 갯수 리스트 반환")
