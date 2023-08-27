@@ -1,4 +1,4 @@
-package com.example.bookAPI.dto.book;
+package com.example.bookAPI.dto.book.purchase;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookBestResponseDto {
+public class BookPurchaseResponseDto {
     private Long id;
     private String title;
     private String writer;
     private String img;
+    private String categories;
 }

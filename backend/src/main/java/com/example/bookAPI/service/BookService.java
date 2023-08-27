@@ -4,6 +4,9 @@ import com.example.bookAPI.domain.Book;
 import com.example.bookAPI.domain.Category;
 import com.example.bookAPI.dto.Enum.CategoryType;
 import com.example.bookAPI.dto.book.*;
+import com.example.bookAPI.dto.book.best.BookBestResponseDto;
+import com.example.bookAPI.dto.book.purchase.BookPurchaseResponseDto;
+import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResponseDto;
 import com.example.bookAPI.repository.BookRepository;
 import com.example.bookAPI.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -90,6 +93,16 @@ public class BookService {
     @Transactional(readOnly = true)
     public Page<BookBestResponseDto> getBestBooks(PageRequest pageable) {
         return bookRepository.findBookByBestOrder(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<BookShareAndFindResponseDto> getShareBooks(PageRequest pageable) {
+        return bookRepository.findBookByShared(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<BookShareAndFindResponseDto> getFindBooks(PageRequest pageable) {
+        return bookRepository.findBookByFound(pageable);
     }
 
     public String getCategoryName(int id) {
