@@ -65,6 +65,10 @@ public class Member extends TimeEntity {
     @OneToOne(mappedBy = "member")
     private Login login;
 
+    @OneToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     @Override
     public String toString() {
         return "Member{" +
