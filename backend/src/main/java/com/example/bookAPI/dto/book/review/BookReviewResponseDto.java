@@ -17,8 +17,8 @@ public class BookReviewResponseDto extends BookBaseResponseDto {
     private BigDecimal rating;
     private LocalDateTime createDateTime;
 
-    public BookReviewResponseDto(Long id, String title, String writer, String img, String content, String name, BigDecimal rating, LocalDateTime createDateTime) {
-        super(id, title, writer, img);
+    public BookReviewResponseDto(Long id, String title, String writer, String publisher, String img, String content, String name, BigDecimal rating, LocalDateTime createDateTime) {
+        super(id, title, writer, publisher, img);
         this.content = content;
         this.name = name;
         this.rating = rating;
