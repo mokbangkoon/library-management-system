@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class BookTeamCategoryResponseDto extends BookBaseResponseDto {
-    public BookTeamCategoryResponseDto(Long id, String title, String writer, String img) {
-        super(id, title, writer, img);
+    public BookTeamCategoryResponseDto(Long id, String title, String writer, String publisher, String img) {
+        super(id, title, writer, publisher, img);
     }
 }

@@ -10,6 +10,8 @@ import com.example.bookAPI.dto.book.purchase.BookPurchaseResponseDto;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseResult;
 import com.example.bookAPI.dto.book.review.BookReviewResponseDto;
 import com.example.bookAPI.dto.book.review.BookReviewResult;
+import com.example.bookAPI.dto.book.search.BookSearchResponseDto;
+import com.example.bookAPI.dto.book.search.BookSearchResult;
 import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResponseDto;
 import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResult;
 import com.example.bookAPI.service.BookService;
@@ -32,15 +34,16 @@ public class BookController {
 
     private final BookService bookService;
 
-    @Operation(summary = "책 이름으로 검색", description = "책 이름으로 페이지네이션 반환")
+    @Operation(summary = "책 검색", description = "책 통합(제목, 저자, 출판사, 소개 합침) 제목, 저자, 출판사, 소개로 검색한 책 리스트 반환")
     @GetMapping("/search")
     public BookSearchResult getBooksByTitle(
+            @Parameter(description = "검색 필터", required = true, example = "검색 시 사용되는 필터") @RequestParam(value = "searchFilter", defaultValue = "1") int searchFilter,
             @Parameter(description = "제목", required = true, example = "sql") @RequestParam(value = "title", defaultValue = "sql") String title,
-            @Parameter(description = "조회 페이지", required = true, example = "0")  @RequestParam(value = "page", defaultValue = "1") int page,
-            @Parameter(description = "조회 사이즈", required = true, example = "sql")  @RequestParam(value = "size", defaultValue = "10") int size
+            @Parameter(description = "조회 페이지", required = true, example = "1")  @RequestParam(value = "page", defaultValue = "1") int page,
+            @Parameter(description = "조회 사이즈", required = true, example = "20")  @RequestParam(value = "size", defaultValue = "20") int size
     ){
         PageRequest pageable = PageRequest.of(page-1, size);
-        Page<BookSearchResponseDto> resultPage = bookService.getBooksByTitle(title, pageable);
+        Page<BookSearchResponseDto> resultPage = bookService.getBooksByTitle(searchFilter, title, pageable);
         return new BookSearchResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
     }
 

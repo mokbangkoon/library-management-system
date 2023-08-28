@@ -8,6 +8,7 @@ import com.example.bookAPI.dto.book.best.BookBestResponseDto;
 import com.example.bookAPI.dto.book.category.BookTeamCategoryResponseDto;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseResponseDto;
 import com.example.bookAPI.dto.book.review.BookReviewResponseDto;
+import com.example.bookAPI.dto.book.search.BookSearchResponseDto;
 import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResponseDto;
 import com.example.bookAPI.repository.BookRepository;
 import com.example.bookAPI.repository.CategoryRepository;
@@ -78,8 +79,8 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public Page<BookSearchResponseDto> getBooksByTitle
-            (String title, Pageable pageable) {
-        return bookRepository.findByTitleContaining(title, pageable);
+            (int searchFilter, String title, Pageable pageable) {
+        return bookRepository.findBookBySearch(searchFilter, title, pageable);
     }
 
     @Transactional(readOnly = true)
