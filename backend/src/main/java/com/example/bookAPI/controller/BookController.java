@@ -18,6 +18,7 @@ import com.example.bookAPI.service.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +38,8 @@ public class BookController {
     @Operation(summary = "책 검색", description = "책 통합(제목, 저자, 출판사, 소개 합침) 제목, 저자, 출판사, 소개로 검색한 책 리스트 반환")
     @GetMapping("/search")
     public BookSearchResult getBooksByTitle(
-            @Parameter(description = "검색 필터", required = true, example = "검색 시 사용되는 필터") @RequestParam(value = "searchFilter", defaultValue = "1") int searchFilter,
+            @Parameter(description = "검색 필터", required = true, schema = @Schema(type = "integer", allowableValues = { "1", "2", "3", "4", "5" }), example = "1")
+            @RequestParam(value = "searchFilter", defaultValue = "1") int searchFilter,
             @Parameter(description = "제목", required = true, example = "sql") @RequestParam(value = "title", defaultValue = "sql") String title,
             @Parameter(description = "조회 페이지", required = true, example = "1")  @RequestParam(value = "page", defaultValue = "1") int page,
             @Parameter(description = "조회 사이즈", required = true, example = "20")  @RequestParam(value = "size", defaultValue = "20") int size
@@ -125,9 +127,9 @@ public class BookController {
     }
 
     @Operation(summary = "팀 별 책 리스트 조회", description = "팀 별 등록한 책 리스트 반환")
-    @GetMapping("/team/{teamId}")
+    @GetMapping("/team")
     public BookTeamCategoryResult getBooksByTeam(
-            @PathVariable(name = "teamId", required = true) Long teamId,
+            @Parameter(name = "teamId", schema = @Schema(type = "Long", allowableValues = { "1", "2", "3", "4", "5", "6", "7" }),  required = true) @RequestParam(value = "teamId", defaultValue = "1") Long teamId,
             @Parameter(description = "조회 페이지", example = "1")  @RequestParam(value = "page", defaultValue = "1") int page,
             @Parameter(description = "조회 사이즈", example = "8")  @RequestParam(value = "size", defaultValue = "8") int size
     ){
