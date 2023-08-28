@@ -87,18 +87,16 @@ public interface BookRepository extends JpaRepository<Book,Long> {
 
     @Query(value = "SELECT new com.example.bookAPI.dto.book.search.BookSearchResponseDto(b.bookId, b.title, b.writer, b.publisher, b.img) " +
             "FROM Book b " +
-            "LEFT JOIN b.reviews br " +
             "LEFT JOIN b.category detail "+
             "LEFT JOIN detail.parentCategory sub "+
             "LEFT JOIN sub.parentCategory c " +
             "WHERE c.parentCategory IS NULL " +
             "AND c.name = :categoryName " +
-            "AND (:title IS NULL OR b.title LIKE %:title% OR b.subtitle LIKE %:title%) " +
             "AND (:subCategory IS NULL OR sub.name = :subCategory) " +
             "OR c.name = sub.name OR c.name = detail.name " +
             "GROUP BY b.bookId"
     )
-    Page<BookSearchResponseDto> findByCategory(@Param("categoryName") String categoryName, @Param("title") String title, @Param("subCategory") String subCategory, Pageable pageable);
+    Page<BookSearchResponseDto> findByCategory(@Param("categoryName") String categoryName, @Param("subCategory") String subCategory, Pageable pageable);
 
     @Query(value = "SELECT c.name, COUNT(b.book_id) AS count " +
             "FROM book AS b " +

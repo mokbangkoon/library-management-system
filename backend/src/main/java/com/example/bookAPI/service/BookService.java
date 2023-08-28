@@ -127,13 +127,9 @@ public class BookService {
         return null;
     }
 
-    public Page<BookSearchResponseDto> getBooksByCategory(int categoryId, String title, String subCategory, Pageable pageable) {
+    public Page<BookSearchResponseDto> getBooksByCategory(int categoryId, String subCategory, Pageable pageable) {
         String categoryName = getCategoryName(categoryId);
-        return bookRepository.findByCategory(categoryName, title, subCategory, pageable);
-    }
-
-    public List<Book> getBooksByIds(List<Long> bookIds){
-        return bookRepository.findAllById(bookIds);
+        return bookRepository.findByCategory(categoryName, subCategory, pageable);
     }
 
     public List<BookCountPerCategoryResponseDto> getBookCountPerCategory() {

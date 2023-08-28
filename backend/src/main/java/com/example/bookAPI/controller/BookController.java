@@ -1,5 +1,6 @@
 package com.example.bookAPI.controller;
 
+import com.example.bookAPI.dto.Enum.CategoryType;
 import com.example.bookAPI.dto.Pagination;
 import com.example.bookAPI.dto.book.*;
 import com.example.bookAPI.dto.book.best.BookBestResponseDto;
@@ -16,6 +17,7 @@ import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResponseDto;
 import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResult;
 import com.example.bookAPI.service.BookService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -97,20 +99,6 @@ public class BookController {
         return new BookShareAndFindResult(sharePage.getContent(), sharePageInfo, findPage.getContent(), findPageInfo);
     }
 
-    @Operation(summary = "카테고리 별 책 리스트 조회", description = "최 상위 카테고리로 책 리스트 반환")
-    @GetMapping("/category/{categoryId}")
-    public BookSearchResult getBooksByCategory(
-            @PathVariable(name = "categoryId", required = true) int categoryId,
-            @Parameter(description = "서브 카테고리 명", required = false) @RequestParam(value = "subCategory", required = false) String subCategory,
-            @Parameter(description = "제목", required = false) @RequestParam(value = "title", required = false) String title,
-            @Parameter(description = "조회 페이지", required = true, example = "0")  @RequestParam(value = "page", defaultValue = "1") int page,
-            @Parameter(description = "조회 사이즈", required = true, example = "10")  @RequestParam(value = "size", defaultValue = "10") int size
-    ){
-        PageRequest pageable = PageRequest.of(page-1, size , Sort.by(Sort.Direction.DESC, "createDateTime"));
-        Page<BookSearchResponseDto> resultPage = bookService.getBooksByCategory(categoryId, title, subCategory, pageable);
-        return new BookSearchResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
-    }
-
     @Operation(summary = "최근 리뷰 달린 책", description = "최근 리뷰 받은 책 리스트 반환")
     @GetMapping("/review")
     public BookReviewResult getReviewBooks(
@@ -136,6 +124,19 @@ public class BookController {
         PageRequest pageable = PageRequest.of(page-1, size);
         Page<BookTeamCategoryResponseDto> resultPage = bookService.getBooksByTeam(teamId, pageable);
         return new BookTeamCategoryResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
+    }
+
+    @Operation(summary = "카테고리 별 책 리스트 조회", description = "최 상위 카테고리로 책 리스트 반환")
+    @GetMapping("/category/{categoryType}")
+    public BookSearchResult getBooksByCategory(
+            @Parameter(description = "카테고리 타입", required = true) @PathVariable(name = "categoryType", required = true) CategoryType categoryType,
+            @Parameter(description = "서브 카테고리 명") @RequestParam(value = "subCategory", required = false) String subCategory,
+            @Parameter(description = "조회 페이지", required = true, example = "0")  @RequestParam(value = "page", defaultValue = "1") int page,
+            @Parameter(description = "조회 사이즈", required = true, example = "10")  @RequestParam(value = "size", defaultValue = "10") int size
+    ){
+        PageRequest pageable = PageRequest.of(page-1, size , Sort.by(Sort.Direction.DESC, "createDateTime"));
+        Page<BookSearchResponseDto> resultPage = bookService.getBooksByCategory(categoryType.getId(), subCategory, pageable);
+        return new BookSearchResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
     }
 
     @Operation(summary = "카테고리 별 책 갯수 조회", description = "카테고리에 해당하는 책 전체 갯수 리스트 반환")
