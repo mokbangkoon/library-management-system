@@ -146,11 +146,11 @@ public class BookController {
     }
 
     @Operation(summary = "서브 카테고리 별 책 갯수 조회", description = "서브 카테고리에 해당하는 책 전체 갯수 리스트 반환")
-    @GetMapping("/category/{categoryId}/count")
+    @GetMapping("/category/{categoryType}/subCategory/count")
     public List<BookCountPerCategoryResponseDto> getBookCountPerSubCategory(
-            @PathVariable(name = "categoryId", required = true) int categoryId
+            @Parameter(description = "카테고리 타입", required = true) @PathVariable(name = "categoryType", required = true) CategoryType categoryType
             ){
-        return bookService.getBookCountPerSubCategory(categoryId);
+        return bookService.getBookCountPerSubCategory(categoryType.getId());
     }
 
     @Operation(summary = "책 리스트 저장", description = "스크래핑으로 받은 책 리스트 저장")
