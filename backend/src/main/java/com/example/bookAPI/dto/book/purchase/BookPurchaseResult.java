@@ -6,7 +6,6 @@ import java.util.List;
 
 @Data
 public class BookPurchaseResult {
-
     private List<BookPurchaseResponseDto> books;
     private int totalPage;
     private long totalCount;

@@ -22,20 +22,20 @@ public class BookShare extends ContentEntity {
     private Long bookShareId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "requesterId", referencedColumnName = "member_id")
-    private Member requesterId; // 책 요청자 정보
+    @JoinColumn(name = "requester_id", referencedColumnName = "member_id")
+    private Member requesterId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sharerId", referencedColumnName = "member_id")
-    private Member sharerId; // 책 공유자 정보
+    @JoinColumn(name = "sharer_id", referencedColumnName = "member_id")
+    private Member sharerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_status_id") // 올바른 외래 키로 변경합니다.
-    private BookStatus bookStatus; // BookStatus와 연관된 필드로 수정합니다.
+    @JoinColumn(name = "book_status_id")
+    private BookStatus bookStatus;
 
 
     @OneToOne(fetch = FetchType.LAZY)

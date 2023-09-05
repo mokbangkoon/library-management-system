@@ -78,9 +78,23 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BookSearchResponseDto> getBooksByTitle
-            (int searchFilter, String title, Pageable pageable) {
-        return bookRepository.findBookBySearch(searchFilter, title, pageable);
+    public Page<BookSearchResponseDto> getBooksByTitle(int searchFilter, String title, Pageable pageable, int type) {
+        if(type == 1){
+            return bookRepository.findBookMainBySearch(searchFilter, title, pageable);
+        } else {
+            return bookRepository.findBookListBySearch(searchFilter, title, pageable)
+                    .map(
+                    book -> new BookSearchResponseDto(
+                            book.getId(),
+                            book.getTitle(),
+                            book.getWriter(),
+                            book.getPublisher(),
+                            book.getImg(),
+                            book.getShareCount(),
+                            book.getFindCount()
+                    )
+            );
+        }
     }
 
     @Transactional(readOnly = true)
@@ -89,13 +103,42 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BookPurchaseResponseDto> getPurchasedBooks(Pageable pageable) {
-        return bookRepository.findBookByPurchasedOrder(pageable);
+    public Page<BookPurchaseResponseDto> getPurchasedBooks(Pageable pageable, int type) {
+        if (type == 1) {
+            return bookRepository.findBookMainByPurchasedOrder(pageable);
+        } else {
+            return bookRepository.findBookListByPurchasedOrder(pageable)
+                    .map(
+                            book -> new BookPurchaseResponseDto(
+                                    book.getId(),
+                                    book.getTitle(),
+                                    book.getWriter(),
+                                    book.getImg(),
+                                    book.getCategories(),
+                                    book.getShareCount(),
+                                    book.getFindCount()
+                            )
+                    );
+        }
     }
 
     @Transactional(readOnly = true)
-    public Page<BookBestResponseDto> getBestBooks(PageRequest pageable) {
-        return bookRepository.findBookByBestOrder(pageable);
+    public Page<BookBestResponseDto> getBestBooks(PageRequest pageable, int type) {
+        if (type == 1) {
+            return bookRepository.findMainBookByBestOrder(pageable);
+        } else {
+            return bookRepository.findBookListByBestOrder(pageable).map(
+                    book -> new BookBestResponseDto(
+                            book.getId(),
+                            book.getTitle(),
+                            book.getWriter(),
+                            book.getPublisher(),
+                            book.getImg(),
+                            book.getShareCount(),
+                            book.getFindCount()
+                    )
+            );
+        }
     }
 
     @Transactional(readOnly = true)

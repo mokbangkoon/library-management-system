@@ -7,12 +7,22 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class BookPurchaseResponseDto {
+@NoArgsConstructor
+public class BookPurchaseResponseDto implements BookPurchaseListResponseDto{
     private Long id;
     private String title;
     private String writer;
     private String img;
     private String categories;
+    private Long shareCount;
+    private Long findCount;
+
+    public BookPurchaseResponseDto(Long id, String title, String writer, String img, String categories) {
+        this.id = id;
+        this.title = title;
+        this.writer = writer;
+        this.img = img;
+        this.categories = categories;
+    }
 }

@@ -33,6 +33,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/books")
+@CrossOrigin(origins = "http://localhost:5173") // 컨트롤러에서 설정
 public class BookController {
 
     private final BookService bookService;
@@ -44,10 +45,13 @@ public class BookController {
             @RequestParam(value = "searchFilter", defaultValue = "1") int searchFilter,
             @Parameter(description = "제목", required = true, example = "sql") @RequestParam(value = "title", defaultValue = "sql") String title,
             @Parameter(description = "조회 페이지", required = true, example = "1")  @RequestParam(value = "page", defaultValue = "1") int page,
-            @Parameter(description = "조회 사이즈", required = true, example = "20")  @RequestParam(value = "size", defaultValue = "20") int size
+            @Parameter(description = "조회 사이즈", required = true, example = "20")  @RequestParam(value = "size", defaultValue = "20") int size,
+            @Parameter(description ="API 타입 여부", example = "1", required = true)
+            @RequestParam(value = "type", defaultValue = "1", required = true) int type
+
     ){
         PageRequest pageable = PageRequest.of(page-1, size);
-        Page<BookSearchResponseDto> resultPage = bookService.getBooksByTitle(searchFilter, title, pageable);
+        Page<BookSearchResponseDto> resultPage = bookService.getBooksByTitle(searchFilter, title, pageable, type);
         return new BookSearchResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
     }
 
@@ -57,12 +61,14 @@ public class BookController {
             @Parameter(description = "조회 페이지", example = "1")
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             @Parameter(description = "조회 사이즈", example = "5")
-            @RequestParam(value = "size", defaultValue = "5", required = false) int size
+            @RequestParam(value = "size", defaultValue = "5", required = false) int size,
+            @Parameter(description ="API 타입 여부", example = "1", required = true)
+            @RequestParam(value = "type", defaultValue = "1", required = true) int type
     ){
         PageRequest pageable;
-        pageable = PageRequest.of(page-1, size, Sort.by(Sort.Direction.DESC, "createDateTime"));
+        pageable = PageRequest.of(page-1, size, Sort.by(Sort.Direction.DESC, type==1 ? "createDateTime" : "create_date_time"));
 
-        Page<BookPurchaseResponseDto> resultPage = bookService.getPurchasedBooks(pageable);
+        Page<BookPurchaseResponseDto> resultPage = bookService.getPurchasedBooks(pageable, type);
         return new BookPurchaseResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
     }
 
@@ -72,12 +78,14 @@ public class BookController {
             @Parameter(description = "조회 페이지", example = "1")
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             @Parameter(description = "조회 사이즈", example = "10")
-            @RequestParam(value = "size", defaultValue = "10", required = false) int size
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+            @Parameter(description ="API 타입 여부", example = "1", required = true)
+            @RequestParam(value = "type", defaultValue = "1", required = true) int type
     ){
         PageRequest pageable;
         pageable = PageRequest.of(page-1, size);
 
-        Page<BookBestResponseDto> resultPage = bookService.getBestBooks(pageable);
+        Page<BookBestResponseDto> resultPage = bookService.getBestBooks(pageable, type);
         return new BookBestResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
     }
 
