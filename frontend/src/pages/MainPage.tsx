@@ -1,7 +1,8 @@
-import LoginButton from "../components/Common/Button/LoginButton";
-import SearchInput from "../components/Common/Input/SearchInput";
-import SearchSelectBox from "../components/Common/SelectBox/SearchSelectBox";
-import MainTab from "../components/Common/Tab/MainTab";
+import LoginButton from '../components/Common/Button/LoginButton';
+import PurchasedCard from '../components/Common/Card/PurchasedCard';
+import SearchInput from '../components/Common/Input/SearchInput';
+import SearchSelectBox from '../components/Common/SelectBox/SearchSelectBox';
+import MainTab from '../components/Common/Tab/MainTab';
 
 const MainPage = () => {
   return (
@@ -17,6 +18,7 @@ const MainPage = () => {
         <SearchSelectBox />
         <SearchInput />
       </div>
+      <PurchasedCard></PurchasedCard>
     </div>
   );
 };
