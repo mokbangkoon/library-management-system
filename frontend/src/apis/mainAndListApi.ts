@@ -30,10 +30,38 @@ export const getBestBooks = async (param: mainParam) => {
 };
 
 export const getShareAndFindBooks = async (param: mainParam) => {
-  const { page, size, type } = param;
+  const { page, size } = param;
   try {
     const response = await axios.get(
       `http://localhost:8080/books/shareAndFind
+      ${page !== undefined ? `&page=${page}` : ''}
+      ${size !== undefined ? `&size=${size}` : ''}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data', error);
+  }
+};
+
+export const getReviewBooks = async (param: mainParam) => {
+  const { page, size } = param;
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/books/review
+      ${page !== undefined ? `&page=${page}` : ''}
+      ${size !== undefined ? `&size=${size}` : ''}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data', error);
+  }
+};
+
+export const getTeamBooks = async (param: mainParam) => {
+  const { page, size, teamId } = param;
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/books/team?teamId=${teamId}
       ${page !== undefined ? `&page=${page}` : ''}
       ${size !== undefined ? `&size=${size}` : ''}`,
     );
