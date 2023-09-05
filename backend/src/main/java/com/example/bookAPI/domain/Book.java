@@ -57,7 +57,6 @@ public class Book {
     @OneToMany(fetch = FetchType.LAZY, mappedBy="book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<View> views = new ArrayList<>();
 
-    @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy="book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookShare> bookShares = new ArrayList<>();
 }

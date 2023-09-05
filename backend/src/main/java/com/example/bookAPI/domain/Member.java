@@ -50,6 +50,12 @@ public class Member extends TimeEntity {
     @OneToMany(mappedBy = "member")
     private List<MemberBook> memberBooks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "requesterId")
+    private List<BookShare> bookShares = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sharerId")
+    private List<BookShare> sharerId = new ArrayList<>();
+
     @OneToMany(mappedBy="member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
