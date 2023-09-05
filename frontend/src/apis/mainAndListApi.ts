@@ -5,8 +5,7 @@ export const getPurchasedBooks = async (param: mainParam) => {
   const { page, size, type } = param;
   try {
     const response = await axios.get(
-      `http://localhost:8080/books/purchased?
-      ${type !== undefined ? `type=${type}` : ''}
+      `http://localhost:8080/books/purchased?type=${type}
       ${page !== undefined ? `&page=${page}` : ''}
       ${size !== undefined ? `&size=${size}` : ''}`,
     );
@@ -20,8 +19,7 @@ export const getBestBooks = async (param: mainParam) => {
   const { page, size, type } = param;
   try {
     const response = await axios.get(
-      `http://localhost:8080/books/purchased?
-      ${type !== undefined ? `type=${type}` : ''}
+      `http://localhost:8080/books/best?type=${type}
       ${page !== undefined ? `&page=${page}` : ''}
       ${size !== undefined ? `&size=${size}` : ''}`,
     );
@@ -31,25 +29,11 @@ export const getBestBooks = async (param: mainParam) => {
   }
 };
 
-export const getFindBooks = async (param: mainParam) => {
+export const getShareAndFindBooks = async (param: mainParam) => {
   const { page, size, type } = param;
   try {
     const response = await axios.get(
-      `http://localhost:8080/books/purchased?type=${type}
-      ${page !== undefined ? `&page=${page}` : ''}
-      ${size !== undefined ? `&size=${size}` : ''}`,
-    );
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching data', error);
-  }
-};
-
-export const getShareBooks = async (param: mainParam) => {
-  const { page, size, type } = param;
-  try {
-    const response = await axios.get(
-      `http://localhost:8080/books/purchased?type=${type}
+      `http://localhost:8080/books/shareAndFind
       ${page !== undefined ? `&page=${page}` : ''}
       ${size !== undefined ? `&size=${size}` : ''}`,
     );
