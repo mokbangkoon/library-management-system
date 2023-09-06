@@ -4,18 +4,18 @@
 
 /* font-weight:700 */
 @font-face {
-  font-family: "Pretendard-Bold";
-  src: url("./assets/fonts/Pretendard-Bold.otf");
+  font-family: 'Pretendard-Bold';
+  src: url('./assets/fonts/Pretendard-Bold.otf');
 }
 /* font-weight:500 */
 @font-face {
-  font-family: "Pretendard-Medium";
-  src: url("./assets/fonts/Pretendard-Medium.otf");
+  font-family: 'Pretendard-Medium';
+  src: url('./assets/fonts/Pretendard-Medium.otf');
 }
 /* font-weight:400 */
 @font-face {
-  font-family: "Pretendard-Regular";
-  src: url("./assets/fonts/Pretendard-Regular.otf");
+  font-family: 'Pretendard-Regular';
+  src: url('./assets/fonts/Pretendard-Regular.otf');
 }
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -145,7 +145,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
   content: none;
 }
 

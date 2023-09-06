@@ -1,0 +1,12 @@
+.ui.dropdown .menu {
+  border-radius: 0 0 1.5rem 1.5rem !important;
+  border-color: #495057 !important;
+}
+.ui.selection.dropdown {
+  min-width: 7.143rem !important;
+  font-family: Pretendard-Regular;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.6000000238418579px;
+  text-align: left;
+}
