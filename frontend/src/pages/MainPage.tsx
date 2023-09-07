@@ -47,9 +47,20 @@ const MainPage = () => {
           getReviewBooks(param),
           getTeamBooks(param),
         ]);
+
         setPurchaseData(purchasedData.books);
         setBestData(bestData.books);
+        shareAndFindData.shareBooks.unshift({
+          id: 0,
+          title: '책 공유하기는 어떻게 해야 하나요?',
+          writer: '가이드 보러가기',
+        });
         setShareData(shareAndFindData.shareBooks);
+        shareAndFindData.findBooks.unshift({
+          id: 0,
+          title: '책을 찾습니다는 어떻게 해야 하나요?',
+          writer: '가이드 보러가기',
+        });
         setFindData(shareAndFindData.findBooks);
         setReviewData(reviewData.books);
         setTeamData(teamData.books);
@@ -75,13 +86,13 @@ const MainPage = () => {
     data: shareData,
     title: '책 공유하기',
     subTitle: '다 읽은 책을 공유해요',
-    type: 'shareAndFind',
+    type: 'share',
   };
   const findProps: props = {
     data: FindData,
     title: '책을 찾습니다',
     subTitle: '이 책을 읽고 싶어요 공유해주세요',
-    type: 'shareAndFind',
+    type: 'find',
   };
   const reviewProps: props = {
     data: reviewData,
@@ -111,7 +122,7 @@ const MainPage = () => {
         <SearchInput />
       </div>
 
-      <div className="purchasedBooks">
+      <div className="pb-16">
         <MainBook
           key="purchased-card"
           data={purchaseProps.data}
@@ -121,7 +132,7 @@ const MainPage = () => {
         />
       </div>
 
-      <div className="bestBooks">
+      <div>
         <MainBook
           key="best-card"
           data={bestProps.data}
@@ -131,7 +142,7 @@ const MainPage = () => {
         />
       </div>
 
-      <div className="shareAndBooks">
+      <div className="pb-16">
         <MainBook
           key="share-card"
           data={shareProps.data}
@@ -148,7 +159,7 @@ const MainPage = () => {
         />
       </div>
 
-      <div className="reviewBooks">
+      <div className="pb-16">
         <MainBook
           key="review-card"
           data={reviewProps.data}
@@ -159,9 +170,6 @@ const MainPage = () => {
       </div>
 
       <div className="teamBooks">
-        {team.map((data, idx) => {
-          return <span key={idx}>{data}</span>;
-        })}
         <MainBook
           key="team-card"
           data={teamProps.data}

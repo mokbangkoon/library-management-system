@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { book } from '../../../../apis/apiResponse';
-import BestBookCard from '../../Card/BestBookCard';
-import PurchasedBookCard from '../../Card/PurchasedBookCard';
-import ReviewBookCard from '../../Card/ReviewBookCard';
-import ShareAndBookCard from '../../Card/ShareAndBookCard';
-import TeamBookCard from '../../Card/TeamBookCard';
-
+import BestBookCard from '../../Card/bestBook/BestBookCard';
+import PurchasedBookCard from '../../Card/purchasedBook/PurchasedBookCard';
+import ReviewBookCard from '../../Card/reviewBook/ReviewBookCard';
+import ShareAndBookCard from '../../Card/shareAndBook/ShareAndBookCard';
+import TeamBookCard from '../../Card/teamBook/TeamBookCard';
+import styles from './MainBook.module.css'; // 파일명 수정
 const MainBook = ({
   data,
   title,
@@ -20,7 +20,8 @@ const MainBook = ({
   const componentMap = {
     purchased: PurchasedBookCard,
     best: BestBookCard,
-    shareAndFind: ShareAndBookCard,
+    share: ShareAndBookCard,
+    find: ShareAndBookCard,
     review: ReviewBookCard,
     team: TeamBookCard,
   };
@@ -48,21 +49,45 @@ const MainBook = ({
 
     fetchData();
   }, []);
+  const team = ['사업', '영업', '개발', '디자인', '기획', '관리', '서비스'];
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       <div className="header">
-        <div>{title}</div>
-        <div>{subTitle}</div>
+        <span className={styles.title}>{title}</span>
+        <div
+          className={
+            type == 'find' || type == 'share'
+              ? 'flex justify-between pt-2 pb-14'
+              : 'flex justify-between pt-2 pb-7'
+          }
+        >
+          <span className={styles.subTitle}>{subTitle}</span>
+          {type !== 'team' ? (
+            <span className={styles.moreBtn}>더보기+</span>
+          ) : null}
+        </div>
+        <div className={type == 'team' ? styles.teamCategory : ''}>
+          {type == 'team'
+            ? team?.map((data, idx) => {
+                return (
+                  <span className={styles.team} key={idx}>
+                    {data}
+                  </span>
+                );
+              })
+            : null}
+        </div>
       </div>
-      <div className="more">더보기+</div>
-      <div className="flex" key="book-key">
-        {data?.map((book) => {
+
+      <div className="flex justify-between flex-wrap" key="book-key">
+        {data?.map((book, idx) => {
           const Component = componentMap[type];
           return loading ? (
             <div key={book.id}></div>
           ) : (
             <Component
+              idx={idx}
               key={book.id}
               img={book.img}
               title={book.title}
@@ -72,9 +97,13 @@ const MainBook = ({
               content={book?.content}
               name={book?.name}
               createDateTime={book?.createDateTime}
+              type={type}
             />
           );
         })}
+      </div>
+      <div className={styles.btnWrapper}>
+        {type == 'team' ? <span className={styles.teamMoreBtn}>더보기</span> : null}
       </div>
     </div>
   );
