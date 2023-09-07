@@ -9,10 +9,10 @@ import {
   getShareAndFindBooks,
   getTeamBooks,
 } from '../apis/mainAndListApi';
+import banner from '../assets/images/banner.svg';
 import LoginButton from '../components/Common/Button/LoginButton';
 import SearchInput from '../components/Common/Input/SearchInput';
 import MainBook from '../components/Common/List/main/MainBook';
-import SearchSelectBox from '../components/Common/SelectBox/SearchSelectBox';
 import MainTab from '../components/Common/Tab/MainTab';
 const MainPage = () => {
   type props = {
@@ -109,9 +109,9 @@ const MainPage = () => {
   const team = ['사업', '영업', '개발', '디자인', '기획', '관리', '서비스'];
 
   return (
-    <div>
-      <div className="max-w-[1920px] ">
-        <div className="flex justify-between items-center max-w-[1200px] m-auto p-6 h-16">
+    <div className="max-w-[1920px]">
+      <div>
+        <div className="flex justify-between items-center max-w-[1200px] m-auto pt-6 pb-6 h-16">
           <MainTab />
           <div className="flex items-center">
             <SearchInput />
@@ -120,62 +120,66 @@ const MainPage = () => {
         </div>
         <div className="h-[3px] bg-[#DFDFDF]"></div>
       </div>
-
-      <div className="pb-16">
-        <MainBook
-          key="purchased-card"
-          data={purchaseProps.data}
-          title={purchaseProps.title}
-          subTitle={purchaseProps.subTitle}
-          type={purchaseProps.type}
-        />
+      <div className="pt-8 pb-16 flex justify-center">
+        <img src={banner} />
       </div>
+      <div className="">
+        <div className="pb-16 flex justify-center">
+          <MainBook
+            key="purchased-card"
+            data={purchaseProps.data}
+            title={purchaseProps.title}
+            subTitle={purchaseProps.subTitle}
+            type={purchaseProps.type}
+          />
+        </div>
 
-      <div>
-        <MainBook
-          key="best-card"
-          data={bestProps.data}
-          title={bestProps.title}
-          subTitle={bestProps.subTitle}
-          type={bestProps.type}
-        />
-      </div>
+        <div className="pb-16 flex justify-center">
+          <MainBook
+            key="best-card"
+            data={bestProps.data}
+            title={bestProps.title}
+            subTitle={bestProps.subTitle}
+            type={bestProps.type}
+          />
+        </div>
 
-      <div className="pb-16">
-        <MainBook
-          key="share-card"
-          data={shareProps.data}
-          title={shareProps.title}
-          subTitle={shareProps.subTitle}
-          type={shareProps.type}
-        />
-        <MainBook
-          key="find-card"
-          data={findProps.data}
-          title={findProps.title}
-          subTitle={findProps.subTitle}
-          type={findProps.type}
-        />
-      </div>
+        <div className="flex pb-16 items-center flex-col">
+          <MainBook
+            key="share-card"
+            data={shareProps.data}
+            title={shareProps.title}
+            subTitle={shareProps.subTitle}
+            type={shareProps.type}
+          />
+          <MainBook
+            key="find-card"
+            data={findProps.data}
+            title={findProps.title}
+            subTitle={findProps.subTitle}
+            type={findProps.type}
+          />
+        </div>
 
-      <div className="pb-16">
-        <MainBook
-          key="review-card"
-          data={reviewProps.data}
-          title={reviewProps.title}
-          subTitle={reviewProps.subTitle}
-          type={reviewProps.type}
-        />
-      </div>
+        <div className="pb-16 flex justify-center">
+          <MainBook
+            key="review-card"
+            data={reviewProps.data}
+            title={reviewProps.title}
+            subTitle={reviewProps.subTitle}
+            type={reviewProps.type}
+          />
+        </div>
 
-      <div className="teamBooks">
-        <MainBook
-          key="team-card"
-          data={teamProps.data}
-          title={teamProps.title}
-          subTitle={teamProps.subTitle}
-          type={teamProps.type}
-        />
+        <div className="pb-16 flex justify-center">
+          <MainBook
+            key="team-card"
+            data={teamProps.data}
+            title={teamProps.title}
+            subTitle={teamProps.subTitle}
+            type={teamProps.type}
+          />
+        </div>
       </div>
     </div>
   );

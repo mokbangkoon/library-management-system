@@ -58,7 +58,7 @@ const MainBook = ({
         <div
           className={
             type == 'find' || type == 'share'
-              ? 'flex justify-between pt-2 pb-14'
+              ? 'flex justify-between pt-2 pb-16'
               : 'flex justify-between pt-2 pb-7'
           }
         >
@@ -102,9 +102,11 @@ const MainBook = ({
           );
         })}
       </div>
-      <div className={styles.btnWrapper}>
-        {type == 'team' ? <span className={styles.teamMoreBtn}>더보기</span> : null}
-      </div>
+      {type == 'team' ? (
+        <div className={styles.btnWrapper}>
+          <span className={styles.teamMoreBtn}>더보기</span>
+        </div>
+      ) : null}
     </div>
   );
 };

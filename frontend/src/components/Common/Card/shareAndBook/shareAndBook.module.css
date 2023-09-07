@@ -1,16 +1,16 @@
 .card {
   border-radius: 1.25rem;
   display: flex;
-  width: 13.813rem;
+  width: 15.813rem;
   flex-direction: column;
-  height: 26.938rem;
+  height: 28.15rem;
 }
 .shareBackground:first-child {
   border-radius: 16px;
   background-color: #4c6ef5;
   display: flex;
-  width: 13.8125rem;
-  height: 20rem;
+  width: 12.5rem;
+  height: 19rem;
   padding: 2rem 1.5rem;
   flex-direction: column;
   justify-content: flex-end;
@@ -22,8 +22,8 @@
   border-radius: 1rem;
   background: #7950f2;
   display: flex;
-  width: 13.8125rem;
-  height: 20rem;
+  width: 12.5rem;
+  height: 19rem;
   padding: 2rem 1.5rem;
   flex-direction: column;
   justify-content: flex-end;
@@ -54,7 +54,7 @@
 }
 .guideSubTitle {
   color: var(--White, #fff);
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-style: normal;
   font-weight: 400;
   line-height: 1.75rem;
@@ -62,8 +62,8 @@
   padding-right: 0.5rem;
 }
 .coverWrapper {
-  width: 13.813rem;
-  height: 20rem;
+  width: 15.813rem;
+  height: 23.6rem;
 }
 .cover {
   width: 100%;

@@ -1,16 +1,19 @@
 .card {
   border-radius: 1.25rem;
   display: flex;
-  width: 13.813rem;
+  width: 15.79rem;
   flex-direction: column;
-  height: 26.938rem;
+  height: 30.76rem;
 }
-.card:nth-child(n) {
+.card:nth-child(-n + 5) {
   margin-bottom: 3.75rem;
+}
+
+.card:nth-child(n) {
 }
 .topWrapper {
   display: flex;
-  width: 13.8125rem;
+  width: 15.79rem;
   height: 1.3125rem;
   padding: 0px 0.5rem;
   justify-content: center;
@@ -39,8 +42,8 @@
   color: var(--White, #fff);
 }
 .wrapper {
-  width: 13.813rem;
-  height: 20rem;
+  width: 15.79rem;
+  height: 22.9rem;
 }
 .cover {
   width: 100%;
