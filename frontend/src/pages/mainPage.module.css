@@ -1,0 +1,15 @@
+.event {
+  width: 1200px;
+  height: 400px;
+  margin: 0 auto;
+}
+
+.eventWrapper {
+  width: 1200px;
+  height: 400px;
+}
+
+.banner {
+  width: 100%;
+  height: 100%;
+}

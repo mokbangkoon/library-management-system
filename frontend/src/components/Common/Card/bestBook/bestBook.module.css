@@ -5,12 +5,6 @@
   flex-direction: column;
   height: 30.76rem;
 }
-.card:nth-child(-n + 5) {
-  margin-bottom: 3.75rem;
-}
-
-.card:nth-child(n) {
-}
 .topWrapper {
   display: flex;
   width: 15.79rem;

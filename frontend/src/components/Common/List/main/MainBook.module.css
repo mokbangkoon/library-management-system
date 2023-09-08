@@ -1,7 +1,5 @@
 .wrapper {
   width: 85.75rem;
-  margin: 0;
-  padding: 0;
 }
 .title {
   color: var(--gray-gray-900, #212529);
@@ -42,6 +40,18 @@
   margin-right: 0.75rem;
   color: var(--gray-gray-600, #868e96);
 }
+.checkedTeam {
+  display: inline-flex;
+  padding: 0.5625rem 1rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6.25rem;
+  border: 1px solid #adb5bd;
+  background: var(--White, #fff);
+  margin-right: 0.75rem;
+  border: 1px solid var(--gray-gray-900, #212529);
+  color: var(--gray-gray-600, #212529);
+}
 .btnWrapper {
   display: flex;
   justify-content: center;
@@ -58,13 +68,6 @@
   border: 1px solid var(--gray-gray-400, #ced4da);
   background: var(--White, #fff);
 }
-.slider {
-  /* display: flex; */
-}
-.slick-next {
-  z-index: 9999;
-}
-
 .slick-slider .slick-initialized {
   position: relative;
 }
