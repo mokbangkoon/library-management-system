@@ -78,23 +78,17 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BookSearchResponseDto> getBooksByTitle(int searchFilter, String title, Pageable pageable, int type) {
-        if(type == 1){
-            return bookRepository.findBookMainBySearch(searchFilter, title, pageable);
-        } else {
-            return bookRepository.findBookListBySearch(searchFilter, title, pageable)
-                    .map(
-                    book -> new BookSearchResponseDto(
-                            book.getId(),
-                            book.getTitle(),
-                            book.getWriter(),
-                            book.getPublisher(),
-                            book.getImg(),
-                            book.getShareCount(),
-                            book.getFindCount()
-                    )
-            );
-        }
+    public Page<BookSearchResponseDto> getBooksByTitle(int searchFilter, String title, Pageable pageable) {
+        return bookRepository.findBookListBySearch(searchFilter, title, pageable).map(
+                book -> new BookSearchResponseDto(
+                        book.getId(),
+                        book.getTitle(),
+                        book.getWriter(),
+                        book.getPublisher(),
+                        book.getImg(),
+                        book.getShareCount(),
+                        book.getFindCount()
+                ));
     }
 
     @Transactional(readOnly = true)

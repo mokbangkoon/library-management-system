@@ -25,26 +25,16 @@ import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book,Long> {
     Optional<Book> findByTitle(String title);
 
-    @Query(value = "SELECT new com.example.bookAPI.dto.book.search.BookSearchResponseDto(b.bookId, b.title, b.writer, b.publisher, b.img) " +
-            "FROM Book b " +
-            "WHERE (:searchFilter = 1 AND b.title LIKE %:title%) OR " +
-            "(:searchFilter = 2 AND b.writer LIKE %:title%) OR " +
-            "(:searchFilter = 3 AND b.publisher LIKE %:title%) OR " +
-            "(:searchFilter = 4 AND b.introduce LIKE %:title%) OR " +
-            "(b.title LIKE %:title% OR b.writer LIKE %:title% OR b.publisher LIKE %:title% OR b.introduce LIKE %:title%)"
-    )
-    Page<BookSearchResponseDto> findBookMainBySearch(@Param("searchFilter") int searchFilter, @Param("title") String title, Pageable pageable);
-
     @Query(value = "SELECT b.book_id, b.title, b.writer, b.publisher, b.img, " +
             "COUNT(bs.sharer_id) AS shareCount, " +
             "COUNT(bs.requester_id) AS findCount " +
             "FROM book b " +
             "LEFT JOIN book_share AS bs ON bs.book_id = b.book_id " +
-            "WHERE (:searchFilter = 1 AND b.title LIKE %:title%) OR " +
-            "(:searchFilter = 2 AND b.writer LIKE %:title%) OR " +
-            "(:searchFilter = 3 AND b.publisher LIKE %:title%) OR " +
-            "(:searchFilter = 4 AND b.introduce LIKE %:title%) OR " +
-            "(b.title LIKE %:title% OR b.writer LIKE %:title% OR b.publisher LIKE %:title% OR b.introduce LIKE %:title%)" +
+            "WHERE (:searchFilter= 1 AND b.title LIKE %:title% OR b.writer LIKE %:title% OR b.publisher LIKE %:title% OR b.introduce LIKE %:title%) OR " +
+            "(:searchFilter = 2 AND b.title LIKE %:title%) OR " +
+            "(:searchFilter = 3 AND b.writer LIKE %:title%) OR " +
+            "(:searchFilter = 4 AND b.publisher LIKE %:title%) OR " +
+            "(:searchFilter = 5 AND b.introduce LIKE %:title%) " +
             "GROUP BY b.book_id", nativeQuery = true
     )
     Page<BookSearchListResponseDto> findBookListBySearch(@Param("searchFilter") int searchFilter, @Param("title") String title, Pageable pageable);
