@@ -9,7 +9,7 @@ const ShareAndBookCard = ({
   title,
   writer,
 }: {
-  idx: number;
+  idx?: number;
   type: string;
   img: string;
   title: string;

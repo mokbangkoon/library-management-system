@@ -9,9 +9,9 @@ const PurchasedBookCard = ({
   img: string;
   title: string;
   writer: string;
-  categories: string;
+  categories?: string;
 }) => {
-  const categoryTag = categories.split('>');
+  const categoryTag = categories?.split('>');
   const gradients = [
     'linear-gradient(180deg, #FFD4FF 0%, #FFF4F7 0.01%, #EBE4FF 100%)',
     'linear-gradient(180deg, #FFEFEB 0%, #F9EAFF 100%)',

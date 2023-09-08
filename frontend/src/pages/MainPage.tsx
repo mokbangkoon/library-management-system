@@ -14,6 +14,7 @@ import LoginButton from '../components/Common/Button/LoginButton';
 import SearchInput from '../components/Common/Input/SearchInput';
 import MainBook from '../components/Common/List/main/MainBook';
 import MainTab from '../components/Common/Tab/MainTab';
+
 const MainPage = () => {
   type props = {
     data: book[];
@@ -106,7 +107,6 @@ const MainPage = () => {
     subTitle: '부서 별 회원들이 구매한 책이에요',
     type: 'team',
   };
-  const team = ['사업', '영업', '개발', '디자인', '기획', '관리', '서비스'];
 
   return (
     <div className="max-w-[1920px]">

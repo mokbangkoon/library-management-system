@@ -1,11 +1,26 @@
 import { useEffect, useState } from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 import { book } from '../../../../apis/apiResponse';
+import { NextButton } from '../../Button/slider/NextButton';
+import { PrevButton } from '../../Button/slider/PrevButton';
 import BestBookCard from '../../Card/bestBook/BestBookCard';
 import PurchasedBookCard from '../../Card/purchasedBook/PurchasedBookCard';
 import ReviewBookCard from '../../Card/reviewBook/ReviewBookCard';
 import ShareAndBookCard from '../../Card/shareAndBook/ShareAndBookCard';
 import TeamBookCard from '../../Card/teamBook/TeamBookCard';
 import styles from './MainBook.module.css'; // 파일명 수정
+function SamplePrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: 'block', background: 'green' }}
+      onClick={onClick}
+    />
+  );
+}
 const MainBook = ({
   data,
   title,
@@ -27,6 +42,18 @@ const MainBook = ({
   };
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const settings = {
+    arrows: true,
+    infinite: true,
+    slidesToShow: type === 'purchased' ? 4 : 3,
+    slidesToScroll: 1,
+    initialSlide: currentSlide,
+    vertical: false,
+    // autoplay: true,
+    nextArrow: <NextButton />,
+    prevArrow: <PrevButton />,
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,7 +107,35 @@ const MainBook = ({
         </div>
       </div>
 
-      <div className="flex justify-between flex-wrap" key="book-key">
+      {type === 'review' ? (
+        <div>
+          <div className={styles.slider}>
+            <Slider {...settings} initialSlide={currentSlide}>
+              {data?.map((book, idx) => {
+                const Component = componentMap[type];
+                return loading ? (
+                  <div key={book.id}></div>
+                ) : (
+                  <Component
+                    idx={idx}
+                    key={book.id}
+                    img={book.img}
+                    title={book.title}
+                    writer={book.writer}
+                    categories={book?.categories}
+                    rating={book?.rating}
+                    content={book?.content}
+                    name={book?.name}
+                    createDateTime={book?.createDateTime}
+                    type={type}
+                  />
+                );
+              })}
+            </Slider>
+          </div>
+        </div>
+      ) : null}
+      {/* <div className="flex justify-between flex-wrap" key="book-key">
         {data?.map((book, idx) => {
           const Component = componentMap[type];
           return loading ? (
@@ -101,7 +156,8 @@ const MainBook = ({
             />
           );
         })}
-      </div>
+      </div> */}
+
       {type == 'team' ? (
         <div className={styles.btnWrapper}>
           <span className={styles.teamMoreBtn}>더보기</span>

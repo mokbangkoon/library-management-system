@@ -58,3 +58,13 @@
   border: 1px solid var(--gray-gray-400, #ced4da);
   background: var(--White, #fff);
 }
+.slider {
+  /* display: flex; */
+}
+.slick-next {
+  z-index: 9999;
+}
+
+.slick-slider .slick-initialized {
+  position: relative;
+}
