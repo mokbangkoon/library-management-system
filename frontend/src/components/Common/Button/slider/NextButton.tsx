@@ -1,4 +1,4 @@
-import nextBtn from '../../../../assets/images/next.svg';
+import nextBtn from '../../../../assets/images/nextBtn.svg';
 import styles from './slider.module.css';
 export function NextButton(props) {
   const { style, onClick } = props;

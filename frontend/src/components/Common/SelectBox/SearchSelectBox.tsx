@@ -1,28 +1,33 @@
-import { ChangeEvent, SyntheticEvent, useState } from 'react';
-import { Select, DropdownProps } from 'semantic-ui-react';
+import { useState } from 'react';
+import { DropdownProps, Select } from 'semantic-ui-react';
 import './styles.css';
 
-const SearchSelectBox = () => {
+const SearchSelectBox = ({ setFilter }) => {
   const [isOpen, setIsOpen] = useState(false);
   const options = [
     {
       key: '1',
-      value: '제목',
-      text: '제목',
+      value: '1',
+      text: '통합검색',
     },
     {
       key: '2',
-      value: '저자',
-      text: '저자',
+      value: '2',
+      text: '제목',
     },
     {
       key: '3',
-      value: '출판사',
-      text: '출판사',
+      value: '3',
+      text: '저자',
     },
     {
       key: '4',
-      value: '책소개',
+      value: '4',
+      text: '출판사',
+    },
+    {
+      key: '5',
+      value: '5',
       text: '책소개',
     },
   ];
@@ -31,7 +36,7 @@ const SearchSelectBox = () => {
     _event?: React.SyntheticEvent<HTMLElement>,
     data?: DropdownProps,
   ) => {
-    console.log(data?.value);
+    setFilter(Number(data?.value));
   };
   return (
     <div>

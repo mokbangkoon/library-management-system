@@ -1,8 +1,18 @@
+import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
+import { mainParam } from '../../../../apis/apiParam';
 import { book } from '../../../../apis/apiResponse';
+import {
+  getBestBooks,
+  getPurchasedBooks,
+  getReviewBooks,
+  getShareAndFindBooks,
+  getTeamBooks,
+} from '../../../../apis/mainAndListApi';
+import noBook from '../../../../assets/images/no-book.avif';
 import { NextButton } from '../../Button/slider/NextButton';
 import { PrevButton } from '../../Button/slider/PrevButton';
 import BestBookCard from '../../Card/bestBook/BestBookCard';
@@ -11,26 +21,19 @@ import ReviewBookCard from '../../Card/reviewBook/ReviewBookCard';
 import ShareAndBookCard from '../../Card/shareAndBook/ShareAndBookCard';
 import TeamBookCard from '../../Card/teamBook/TeamBookCard';
 import styles from './MainBook.module.css'; // 파일명 수정
-function SamplePrevArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{ ...style, display: 'block', background: 'green' }}
-      onClick={onClick}
-    />
-  );
-}
+
 const MainBook = ({
   data,
   title,
   subTitle,
   type,
+  teamId,
 }: {
   data: book[];
   title: string;
   subTitle: string;
   type: string;
+  teamId?: number;
 }) => {
   const componentMap = {
     purchased: PurchasedBookCard,
@@ -40,9 +43,35 @@ const MainBook = ({
     review: ReviewBookCard,
     team: TeamBookCard,
   };
+
+  const getClassName = (type: string) => {
+    let className = '';
+    switch (type) {
+      case 'best':
+        className = 'grid grid-cols-5 gap-y-16 gap-x-6';
+        break;
+      case 'share':
+        className = 'grid grid-cols-5 gap-x-6 pb-16';
+        break;
+      case 'find':
+        className = 'grid grid-cols-5 gap-x-6 pb-16';
+        break;
+      case 'team':
+        className =
+          book.length !== 0 ? 'grid grid-cols-4 gap-y-14 gap-x-6' : '';
+        break;
+      default:
+        break;
+    }
+    return className;
+  };
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(0);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [book, setBook] = useState<book[]>(data);
+  const [teamIdx, setTeamIdx] = useState<number>(teamId);
+  const [isClick, setClick] = useState<boolean>(false);
+
   const settings = {
     arrows: true,
     infinite: true,
@@ -50,12 +79,56 @@ const MainBook = ({
     slidesToScroll: 1,
     initialSlide: currentSlide,
     vertical: false,
-    // autoplay: true,
     nextArrow: <NextButton />,
     prevArrow: <PrevButton />,
   };
+  const param: mainParam = { type: 2, page: 1, size: 20, teamId: teamIdx };
+
+  const clickMoreBtn = async (
+    event: React.MouseEvent<HTMLSpanElement>,
+    type: string,
+  ) => {
+    switch (type) {
+      case 'purchased':
+        await getPurchasedBooks(param);
+        break;
+      case 'best':
+        await getBestBooks(param);
+        break;
+      case 'share':
+        await getShareAndFindBooks(param);
+        break;
+      case 'find':
+        await getShareAndFindBooks(param);
+        break;
+      case 'review':
+        await getReviewBooks(param);
+        break;
+      case 'team':
+        await getTeamBooks(param);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const changeTeam = async (
+    event: React.MouseEvent<HTMLSpanElement>,
+    idx: number,
+  ) => {
+    setTeamIdx(idx + 1);
+    setClick(true);
+    const { books } = await getTeamBooks({
+      type: 1,
+      page: 1,
+      size: 20,
+      teamId: idx + 1,
+    });
+    setBook(books);
+  };
 
   useEffect(() => {
+    setBook(data);
     const fetchData = async () => {
       try {
         if (error) {
@@ -66,7 +139,7 @@ const MainBook = ({
           );
         }
 
-        if (!Array.isArray(data)) {
+        if (!Array.isArray(book)) {
           return <div>발견된 책이 없습니다.</div>;
         }
       } catch (error) {
@@ -75,11 +148,13 @@ const MainBook = ({
     };
 
     fetchData();
-  }, []);
+  }, [data]);
   const team = ['사업', '영업', '개발', '디자인', '기획', '관리', '서비스'];
-
+  const wrapperClassName = classNames(styles.wrapper, {
+    [styles.share]: type === 'share',
+  });
   return (
-    <div className={styles.wrapper}>
+    <div className={wrapperClassName}>
       <div className="header">
         <span className={styles.title}>{title}</span>
         <div
@@ -91,14 +166,25 @@ const MainBook = ({
         >
           <span className={styles.subTitle}>{subTitle}</span>
           {type !== 'team' ? (
-            <span className={styles.moreBtn}>더보기+</span>
+            <span
+              className={styles.moreBtn}
+              onClick={(e) => clickMoreBtn(e, type)}
+            >
+              더보기+
+            </span>
           ) : null}
         </div>
         <div className={type == 'team' ? styles.teamCategory : ''}>
           {type == 'team'
             ? team?.map((data, idx) => {
                 return (
-                  <span className={styles.team} key={idx}>
+                  <span
+                    className={
+                      idx + 1 === teamIdx ? styles.checkedTeam : styles.team
+                    }
+                    key={idx}
+                    onClick={(e) => changeTeam(e, idx)}
+                  >
                     {data}
                   </span>
                 );
@@ -107,60 +193,73 @@ const MainBook = ({
         </div>
       </div>
 
-      {type === 'review' ? (
-        <div>
-          <div className={styles.slider}>
-            <Slider {...settings} initialSlide={currentSlide}>
-              {data?.map((book, idx) => {
-                const Component = componentMap[type];
-                return loading ? (
-                  <div key={book.id}></div>
-                ) : (
-                  <Component
-                    idx={idx}
-                    key={book.id}
-                    img={book.img}
-                    title={book.title}
-                    writer={book.writer}
-                    categories={book?.categories}
-                    rating={book?.rating}
-                    content={book?.content}
-                    name={book?.name}
-                    createDateTime={book?.createDateTime}
-                    type={type}
-                  />
-                );
-              })}
-            </Slider>
-          </div>
+      {type === 'review' || type == 'purchased' ? (
+        <div className={styles.slider}>
+          <Slider {...settings} initialSlide={currentSlide}>
+            {book?.map((book, idx) => {
+              const Component = componentMap[type];
+              return loading ? (
+                <div key={book.id}></div>
+              ) : (
+                <Component
+                  idx={idx}
+                  key={book.id}
+                  img={book.img}
+                  title={book.title}
+                  writer={book.writer}
+                  categories={book?.categories}
+                  rating={book?.rating}
+                  content={book?.content}
+                  name={book?.name}
+                  createDateTime={book?.createDateTime}
+                  type={type}
+                />
+              );
+            })}
+          </Slider>
         </div>
-      ) : null}
-      {/* <div className="flex justify-between flex-wrap" key="book-key">
-        {data?.map((book, idx) => {
-          const Component = componentMap[type];
-          return loading ? (
-            <div key={book.id}></div>
+      ) : (
+        <div className={getClassName(type)}>
+          {isClick && book.length === 0 ? (
+            <div className="flex items-center flex-col items-center">
+              <h1 className="text-neutral-300">등록된 책이 아직 없어요</h1>
+              <div className="w-1/3	 h-1/4">
+                <img src={noBook} className="w-full h-full object-cover" />
+              </div>
+            </div>
           ) : (
-            <Component
-              idx={idx}
-              key={book.id}
-              img={book.img}
-              title={book.title}
-              writer={book.writer}
-              categories={book?.categories}
-              rating={book?.rating}
-              content={book?.content}
-              name={book?.name}
-              createDateTime={book?.createDateTime}
-              type={type}
-            />
-          );
-        })}
-      </div> */}
+            book?.map((book, idx) => {
+              const Component = componentMap[type];
+              return loading ? (
+                <div key={book.id}></div>
+              ) : (
+                <Component
+                  idx={idx}
+                  key={book.id}
+                  img={book.img}
+                  title={book.title}
+                  writer={book.writer}
+                  categories={book?.categories}
+                  rating={book?.rating}
+                  content={book?.content}
+                  name={book?.name}
+                  createDateTime={book?.createDateTime}
+                  type={type}
+                />
+              );
+            })
+          )}
+        </div>
+      )}
 
       {type == 'team' ? (
         <div className={styles.btnWrapper}>
-          <span className={styles.teamMoreBtn}>더보기</span>
+          <span
+            onClick={(e) => clickMoreBtn(e, type)}
+            className={styles.teamMoreBtn}
+          >
+            더보기
+          </span>
         </div>
       ) : null}
     </div>

@@ -24,7 +24,7 @@ const ShareAndBookCard = ({
       }`}
     >
       {idx == 0 ? (
-        <div>
+        <div className={styles.guide}>
           <img
             className={styles.guideImg}
             src={type === 'share' ? share : find}

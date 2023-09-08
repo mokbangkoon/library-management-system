@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 import { mainParam } from '../apis/apiParam';
 import { book } from '../apis/apiResponse';
 import { Department } from '../apis/enum';
@@ -9,11 +12,14 @@ import {
   getShareAndFindBooks,
   getTeamBooks,
 } from '../apis/mainAndListApi';
-import banner from '../assets/images/banner.svg';
+import event1 from '../assets/images/event1.png';
+import event2 from '../assets/images/event2.jpeg';
+import event3 from '../assets/images/event3.png';
 import LoginButton from '../components/Common/Button/LoginButton';
 import SearchInput from '../components/Common/Input/SearchInput';
 import MainBook from '../components/Common/List/main/MainBook';
 import MainTab from '../components/Common/Tab/MainTab';
+import styles from './mainPage.module.css';
 
 const MainPage = () => {
   type props = {
@@ -21,6 +27,15 @@ const MainPage = () => {
     title: string;
     subTitle: string;
     type: string;
+  };
+  const settings = {
+    arrows: false,
+    dots: true,
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
   };
 
   const param: mainParam = { type: 1, teamId: Department.사업 };
@@ -120,10 +135,20 @@ const MainPage = () => {
         </div>
         <div className="h-[3px] bg-[#DFDFDF]"></div>
       </div>
-      <div className="pt-8 pb-16 flex justify-center">
-        <img src={banner} />
+      <div className={styles.event}>
+        <Slider {...settings}>
+          <div className={styles.eventWrapper}>
+            <img className={styles.banner} src={event1} />
+          </div>
+          <div className={styles.eventWrapper}>
+            <img className={styles.banner} src={event2} />
+          </div>
+          <div className={styles.eventWrapper}>
+            <img className={styles.banner} src={event3} />
+          </div>
+        </Slider>
       </div>
-      <div className="">
+      <div className="pt-16">
         <div className="pb-16 flex justify-center">
           <MainBook
             key="purchased-card"
@@ -144,7 +169,7 @@ const MainPage = () => {
           />
         </div>
 
-        <div className="flex pb-16 items-center flex-col">
+        <div className="flex items-center flex-col items-center">
           <MainBook
             key="share-card"
             data={shareProps.data}
@@ -178,6 +203,7 @@ const MainPage = () => {
             title={teamProps.title}
             subTitle={teamProps.subTitle}
             type={teamProps.type}
+            teamId={param.teamId}
           />
         </div>
       </div>

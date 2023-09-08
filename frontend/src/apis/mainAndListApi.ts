@@ -33,9 +33,9 @@ export const getShareAndFindBooks = async (param: mainParam) => {
   const { page, size } = param;
   try {
     const response = await axios.get(
-      `http://localhost:8080/books/shareAndFind
-      ${page !== undefined ? `&page=${page}` : ''}
-      ${size !== undefined ? `&size=${size}` : ''}`,
+      page && size
+        ? `http://localhost:8080/books/shareAndFind?page=${page}&size=${size}`
+        : `http://localhost:8080/books/shareAndFind`,
     );
     return response.data;
   } catch (error) {
@@ -47,9 +47,9 @@ export const getReviewBooks = async (param: mainParam) => {
   const { page, size } = param;
   try {
     const response = await axios.get(
-      `http://localhost:8080/books/review
-      ${page !== undefined ? `&page=${page}` : ''}
-      ${size !== undefined ? `&size=${size}` : ''}`,
+      page && size
+        ? `http://localhost:8080/books/review?page=${page}&size=${size}`
+        : `http://localhost:8080/books/review`,
     );
     return response.data;
   } catch (error) {
@@ -64,6 +64,18 @@ export const getTeamBooks = async (param: mainParam) => {
       `http://localhost:8080/books/team?teamId=${teamId}
       ${page !== undefined ? `&page=${page}` : ''}
       ${size !== undefined ? `&size=${size}` : ''}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data', error);
+  }
+};
+
+export const getSearchedBooks = async (param: mainParam) => {
+  const { page, size, searchFilter, title } = param;
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/books/search?searchFilter=${searchFilter}&title=${title}&page=${page}&size=${size}`,
     );
     return response.data;
   } catch (error) {
