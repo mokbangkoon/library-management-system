@@ -13,7 +13,7 @@ const BestBookCard = ({
 }) => {
   return (
     <div className={styles.card}>
-      {idx && idx + 1 == 1 ? (
+      {idx + 1 == 1 ? (
         <div className={styles.topWrapper}>
           <img src={star} />
           <span className={styles.top}>UBcare Best {idx && idx + 1}</span>

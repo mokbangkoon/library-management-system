@@ -10,6 +10,12 @@ export interface book {
   createDateTime?: Date;
 }
 
+export interface bookList extends book {
+  publisher: string;
+  shareCount: number;
+  findCount: number;
+}
+
 interface pagination {
   currentPage: number;
   lastPage: number;
