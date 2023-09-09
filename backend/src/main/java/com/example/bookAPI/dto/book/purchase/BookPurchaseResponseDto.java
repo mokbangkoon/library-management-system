@@ -15,9 +15,9 @@ public class BookPurchaseResponseDto implements BookPurchaseListResponseDto{
     private String writer;
     private String img;
     private String categories;
+    private String publisher;
     private Long shareCount;
     private Long findCount;
-
     public BookPurchaseResponseDto(Long id, String title, String writer, String img, String categories) {
         this.id = id;
         this.title = title;
