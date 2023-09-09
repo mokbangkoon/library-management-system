@@ -9,6 +9,10 @@
   align-items: center;
   height: fit-content;
 }
+
+.card:nth-child(1) {
+  margin-right: 24px; /* 오른쪽 여백 */
+}
 .coverWrapper {
   width: 11.25rem;
   height: 15rem;

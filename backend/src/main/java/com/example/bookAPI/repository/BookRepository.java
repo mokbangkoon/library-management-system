@@ -25,26 +25,16 @@ import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book,Long> {
     Optional<Book> findByTitle(String title);
 
-    @Query(value = "SELECT new com.example.bookAPI.dto.book.search.BookSearchResponseDto(b.bookId, b.title, b.writer, b.publisher, b.img) " +
-            "FROM Book b " +
-            "WHERE (:searchFilter = 1 AND b.title LIKE %:title%) OR " +
-            "(:searchFilter = 2 AND b.writer LIKE %:title%) OR " +
-            "(:searchFilter = 3 AND b.publisher LIKE %:title%) OR " +
-            "(:searchFilter = 4 AND b.introduce LIKE %:title%) OR " +
-            "(b.title LIKE %:title% OR b.writer LIKE %:title% OR b.publisher LIKE %:title% OR b.introduce LIKE %:title%)"
-    )
-    Page<BookSearchResponseDto> findBookMainBySearch(@Param("searchFilter") int searchFilter, @Param("title") String title, Pageable pageable);
-
     @Query(value = "SELECT b.book_id, b.title, b.writer, b.publisher, b.img, " +
             "COUNT(bs.sharer_id) AS shareCount, " +
             "COUNT(bs.requester_id) AS findCount " +
             "FROM book b " +
             "LEFT JOIN book_share AS bs ON bs.book_id = b.book_id " +
-            "WHERE (:searchFilter = 1 AND b.title LIKE %:title%) OR " +
-            "(:searchFilter = 2 AND b.writer LIKE %:title%) OR " +
-            "(:searchFilter = 3 AND b.publisher LIKE %:title%) OR " +
-            "(:searchFilter = 4 AND b.introduce LIKE %:title%) OR " +
-            "(b.title LIKE %:title% OR b.writer LIKE %:title% OR b.publisher LIKE %:title% OR b.introduce LIKE %:title%)" +
+            "WHERE (:searchFilter= 1 AND b.title LIKE %:title% OR b.writer LIKE %:title% OR b.publisher LIKE %:title% OR b.introduce LIKE %:title%) OR " +
+            "(:searchFilter = 2 AND b.title LIKE %:title%) OR " +
+            "(:searchFilter = 3 AND b.writer LIKE %:title%) OR " +
+            "(:searchFilter = 4 AND b.publisher LIKE %:title%) OR " +
+            "(:searchFilter = 5 AND b.introduce LIKE %:title%) " +
             "GROUP BY b.book_id", nativeQuery = true
     )
     Page<BookSearchListResponseDto> findBookListBySearch(@Param("searchFilter") int searchFilter, @Param("title") String title, Pageable pageable);
@@ -81,7 +71,7 @@ public interface BookRepository extends JpaRepository<Book,Long> {
 
     @Query(value = "SELECT new com.example.bookAPI.dto.book.best.BookBestResponseDto(b.bookId AS id, b.title, b.writer, b.publisher, b.img) " +
             "FROM Book b " +
-            "JOIN b.reviews r " +
+            "LEFT JOIN b.reviews r " +
             "JOIN b.views v " +
             "GROUP BY b.bookId " +
             "ORDER BY (count(distinct v.viewId) * 4 + avg (r.rating) * 6) DESC"
@@ -92,7 +82,7 @@ public interface BookRepository extends JpaRepository<Book,Long> {
             "COUNT(bs.sharer_id) AS shareCount, " +
             "COUNT(bs.requester_id) AS findCount " +
             "FROM book b " +
-            "INNER JOIN review r ON r.book_id = b.book_id " +
+            "LEFT JOIN review r ON r.book_id = b.book_id " +
             "INNER JOIN view v ON v.book_id = b.book_id " +
             "LEFT JOIN book_share AS bs ON bs.book_id = b.book_id " +
             "GROUP BY b.book_id " +

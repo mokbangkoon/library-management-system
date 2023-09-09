@@ -13,10 +13,10 @@ const ReviewBookCard = ({
   img: string;
   title: string;
   writer: string;
-  content: string;
-  name: string;
-  rating: number;
-  createDateTime: Date;
+  content?: string;
+  name?: string;
+  rating?: number;
+  createDateTime?: Date;
 }) => {
   const background = ['#FFF5F5', '#FFF9F1', '#FFFDF0', '#FFFDF3', '#FFFDF5'];
   const [currentGradientIndex, setCurrentGradientIndex] = useState(0);
