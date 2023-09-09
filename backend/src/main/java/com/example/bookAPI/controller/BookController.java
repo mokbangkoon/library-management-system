@@ -92,14 +92,16 @@ public class BookController {
             @Parameter(description = "조회 페이지", example = "1")
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             @Parameter(description = "조회 사이즈", example = "6")
-            @RequestParam(value = "size", defaultValue = "6", required = false) int size
+            @RequestParam(value = "size", defaultValue = "6", required = false) int size,
+            @Parameter(description ="API 타입 여부", example = "1", required = true)
+            @RequestParam(value = "type", defaultValue = "1", required = true) int type
     ){
         PageRequest pageable;
         pageable = PageRequest.of(page-1, size);
 
-        Page<BookShareAndFindResponseDto> sharePage = bookService.getShareBooks(pageable);
+        Page<BookShareAndFindResponseDto> sharePage = bookService.getShareBooks(pageable, type);
         Pagination sharePageInfo = new Pagination(sharePage.getTotalPages(), sharePage.getTotalElements(), sharePage.getNumber() + 1, sharePage.isLast());
-        Page<BookShareAndFindResponseDto> findPage = bookService.getFindBooks(pageable);
+        Page<BookShareAndFindResponseDto> findPage = bookService.getFindBooks(pageable, type);
         Pagination findPageInfo = new Pagination(findPage.getTotalPages(), findPage.getTotalElements(), findPage.getNumber() + 1, findPage.isLast());
         return new BookShareAndFindResult(sharePage.getContent(), sharePageInfo, findPage.getContent(), findPageInfo);
     }
@@ -110,12 +112,14 @@ public class BookController {
             @Parameter(description = "조회 페이지", example = "1")
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             @Parameter(description = "조회 사이즈", example = "10")
-            @RequestParam(value = "size", defaultValue = "10", required = false) int size
+            @RequestParam(value = "size", defaultValue = "10", required = false) int size,
+            @Parameter(description ="API 타입 여부", example = "1", required = true)
+            @RequestParam(value = "type", defaultValue = "1", required = true) int type
     ){
         PageRequest pageable;
         pageable = PageRequest.of(page-1, size);
 
-        Page<BookReviewResponseDto> resultPage = bookService.getReviewBooks(pageable);
+        Page<BookReviewResponseDto> resultPage = bookService.getReviewBooks(pageable, type);
         return new BookReviewResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
     }
 
@@ -124,10 +128,11 @@ public class BookController {
     public BookTeamCategoryResult getBooksByTeam(
             @Parameter(name = "teamId", schema = @Schema(type = "Long", allowableValues = { "1", "2", "3", "4", "5", "6", "7" }),  required = true) @RequestParam(value = "teamId", defaultValue = "1") Long teamId,
             @Parameter(description = "조회 페이지", example = "1")  @RequestParam(value = "page", defaultValue = "1") int page,
-            @Parameter(description = "조회 사이즈", example = "8")  @RequestParam(value = "size", defaultValue = "8") int size
+            @Parameter(description = "조회 사이즈", example = "8")  @RequestParam(value = "size", defaultValue = "8") int size,
+            @Parameter(description ="API 타입 여부", example = "1", required = true) @RequestParam(value = "type", defaultValue = "1", required = true) int type
     ){
         PageRequest pageable = PageRequest.of(page-1, size);
-        Page<BookTeamCategoryResponseDto> resultPage = bookService.getBooksByTeam(teamId, pageable);
+        Page<BookTeamCategoryResponseDto> resultPage = bookService.getBooksByTeam(teamId, pageable, type);
         return new BookTeamCategoryResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
     }
 
