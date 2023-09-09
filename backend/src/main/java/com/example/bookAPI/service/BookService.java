@@ -109,6 +109,7 @@ public class BookService {
                                     book.getWriter(),
                                     book.getImg(),
                                     book.getCategories(),
+                                    book.getPublisher(),
                                     book.getShareCount(),
                                     book.getFindCount()
                             )
@@ -121,7 +122,7 @@ public class BookService {
         if (type == 1) {
             return bookRepository.findMainBookByBestOrder(pageable);
         } else {
-            return bookRepository.findBookListByBestOrder(pageable).map(
+            return bookRepository.findListBookByBestOrder(pageable).map(
                     book -> new BookBestResponseDto(
                             book.getId(),
                             book.getTitle(),
@@ -136,23 +137,84 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BookShareAndFindResponseDto> getShareBooks(PageRequest pageable) {
-        return bookRepository.findBookByShared(pageable);
+    public Page<BookShareAndFindResponseDto> getShareBooks(PageRequest pageable, int type) {
+        if (type == 1) {
+            return bookRepository.findMainBookByShared(pageable);
+        } else {
+            return bookRepository.findListBookByShared(pageable).map(
+                    book -> new BookShareAndFindResponseDto(
+                            book.getId(),
+                            book.getTitle(),
+                            book.getWriter(),
+                            book.getPublisher(),
+                            book.getImg(),
+                            book.getShareCount(),
+                            book.getFindCount()
+                    )
+            );
+        }
     }
 
     @Transactional(readOnly = true)
-    public Page<BookShareAndFindResponseDto> getFindBooks(PageRequest pageable) {
-        return bookRepository.findBookByFound(pageable);
+    public Page<BookShareAndFindResponseDto> getFindBooks(PageRequest pageable, int type) {
+        if (type == 1) {
+            return bookRepository.findMainBookByFound(pageable);
+        } else {
+            return bookRepository.findListBookByFound(pageable).map(
+                    book -> new BookShareAndFindResponseDto(
+                            book.getId(),
+                            book.getTitle(),
+                            book.getWriter(),
+                            book.getPublisher(),
+                            book.getImg(),
+                            book.getShareCount(),
+                            book.getFindCount()
+                    )
+            );
+        }
     }
 
     @Transactional(readOnly = true)
-    public Page<BookReviewResponseDto> getReviewBooks(PageRequest pageable) {
-        return bookRepository.findBookByReviews(pageable);
+    public Page<BookReviewResponseDto> getReviewBooks(PageRequest pageable, int type) {
+        if (type == 1) {
+            return bookRepository.findMainBookByReviews(pageable);
+        } else {
+            return bookRepository.findListBookByReviews(pageable).map(
+                    book -> new BookReviewResponseDto(
+                            book.getId(),
+                            book.getTitle(),
+                            book.getWriter(),
+                            book.getPublisher(),
+                            book.getImg(),
+                            book.getShareCount(),
+                            book.getFindCount(),
+                            book.getContent(),
+                            book.getName(),
+                            book.getRating(),
+                            book.getCreateDateTime()
+                    )
+            );
+        }
     }
 
     @Transactional(readOnly = true)
-    public Page<BookTeamCategoryResponseDto> getBooksByTeam(Long teamId, PageRequest pageable) {
-        return bookRepository.findBookByTeamCategory(teamId, pageable);
+    public Page<BookTeamCategoryResponseDto> getBooksByTeam(Long teamId, PageRequest pageable, int type) {
+        if (type == 1) {
+            return bookRepository.findMainBookByTeamCategory(teamId, pageable);
+        } else {
+            return bookRepository.findListBookByTeamCategory(teamId, pageable).map(
+                    book -> new BookTeamCategoryResponseDto(
+                            book.getId(),
+                            book.getTitle(),
+                            book.getWriter(),
+                            book.getPublisher(),
+                            book.getImg(),
+                            book.getShareCount(),
+                            book.getFindCount()
+                    )
+            );
+
+        }
     }
 
     public String getCategoryName(int id) {

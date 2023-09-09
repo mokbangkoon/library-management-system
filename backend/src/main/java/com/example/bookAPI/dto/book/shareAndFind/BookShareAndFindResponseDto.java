@@ -10,6 +10,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class BookShareAndFindResponseDto extends BookBaseResponseDto {
+    private Long shareCount;
+    private Long findCount;
+
+    public BookShareAndFindResponseDto(Long id, String title, String writer, String publisher, String img, Long shareCount, Long findCount) {
+        super(id, title, writer, publisher, img);
+        this.shareCount = shareCount;
+        this.findCount = findCount;
+    }
+
     public BookShareAndFindResponseDto(Long id, String title, String writer, String publisher, String img) {
         super(id, title, writer, publisher, img);
     }
