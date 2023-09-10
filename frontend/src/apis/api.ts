@@ -87,7 +87,7 @@ export const getBook = async (params: detailParam) => {
   const token = localStorage.getItem('access-token');
   try {
     const response = await axios.get(
-      `http://localhost:8080/book/bookId=${params.bookId}`,
+      `http://localhost:8080/books/${params.bookId}`,
       {
         headers: {
           Authorization: token ? `Bearer ${token}` : null,

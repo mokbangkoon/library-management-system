@@ -14,7 +14,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/book/:id" element={<DetailPage />} />{' '}
+          <Route path="/book/:id" element={<DetailPage />} />
         </Routes>
       </Router>
     </div>
