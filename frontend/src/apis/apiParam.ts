@@ -6,3 +6,12 @@ export type mainParam = {
   title?: string;
   searchFilter?: number;
 };
+
+export type detailParam = {
+  bookId: number;
+};
+
+export type loginParm = {
+  email: string;
+  password: string;
+};

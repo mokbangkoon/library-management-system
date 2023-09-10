@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { mainParam } from './apiParam';
+import { detailParam, loginParm, mainParam } from './apiParam';
 
 export const getPurchasedBooks = async (param: mainParam) => {
   const { page, size, type } = param;
@@ -77,6 +77,35 @@ export const getSearchedBooks = async (param: mainParam) => {
     const response = await axios.get(
       `http://localhost:8080/books/search?searchFilter=${searchFilter}&title=${title}&page=${page}&size=${size}`,
     );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data', error);
+  }
+};
+
+export const getBook = async (params: detailParam) => {
+  const token = localStorage.getItem('access-token');
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/book/bookId=${params.bookId}`,
+      {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : null,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data', error);
+  }
+};
+
+export const login = async (params: loginParm) => {
+  try {
+    const response = await axios.post(`http://localhost:8080/member/login`, {
+      email: params.email,
+      password: params.password,
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching data', error);
