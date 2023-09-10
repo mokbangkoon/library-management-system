@@ -1,21 +1,21 @@
-import { useEffect, useState } from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick-theme.css';
-import 'slick-carousel/slick/slick.css';
 import {
   getBestBooks,
   getPurchasedBooks,
   getReviewBooks,
   getShareAndFindBooks,
   getTeamBooks,
-} from '../apis/api';
-import { mainParam } from '../apis/apiParam';
-import { book } from '../apis/apiResponse';
-import { Department } from '../apis/enum';
-import event1 from '../assets/images/event1.png';
-import event2 from '../assets/images/event2.jpeg';
-import event3 from '../assets/images/event3.png';
-import MainBook from '../components/Common/List/main/MainBook';
+} from '@apis/api';
+import { mainParam } from '@apis/apiParam';
+import { book } from '@apis/apiResponse';
+import { Department } from '@apis/enum';
+import event1 from '@assets/images/event1.png';
+import event2 from '@assets/images/event2.jpeg';
+import event3 from '@assets/images/event3.png';
+import MainBook from '@components/Common/List/main/MainBook';
+import { useEffect, useState } from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 import styles from './mainPage.module.css';
 
 const MainPage = () => {

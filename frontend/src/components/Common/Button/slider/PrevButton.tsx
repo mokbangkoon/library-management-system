@@ -1,4 +1,4 @@
-import nextBtn from '../../../../assets/images/prevBtn.svg';
+import nextBtn from '@assets/images/prevBtn.svg';
 import styles from './slider.module.css';
 
 export function PrevButton(props) {

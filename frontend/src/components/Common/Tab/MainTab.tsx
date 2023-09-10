@@ -1,5 +1,5 @@
+import logo from '@assets/images/icon-ubcare.png';
 import { useState, useEffect } from 'react';
-import logo from '../../../assets/images/icon-ubcare.png';
 import { Link, useLocation } from 'react-router-dom';
 
 const MainTab = () => {

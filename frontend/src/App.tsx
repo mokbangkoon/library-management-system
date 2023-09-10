@@ -1,10 +1,10 @@
 // 기본 css
-import './index.css';
+import '@src/index.css';
 // Page 및 컴포넌트
+import Nav from '@components/Common/Nav/Nav';
+import DetailPage from '@pages/detail/DetailPage';
+import MainPage from '@pages/main/MainPage';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Nav from './components/Common/Nav/Nav';
-import DetailPage from './pages/DetailPage';
-import MainPage from './pages/MainPage';
 import CategoryPage from './pages/CategoryPage';
 import MyBookPage from './pages/MyBook.Page';
 import CommunityPage from './pages/CommunityPage';

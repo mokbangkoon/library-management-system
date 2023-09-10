@@ -1,4 +1,4 @@
-import { login } from '../../../apis/api';
+import { login } from '@apis/api';
 
 const LoginButton = ({ authenticated, setUser }) => {
   const clickLogin = async (e, authenticated) => {
