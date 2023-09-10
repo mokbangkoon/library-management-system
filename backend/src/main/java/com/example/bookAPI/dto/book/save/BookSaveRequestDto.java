@@ -1,4 +1,4 @@
-package com.example.bookAPI.dto.book;
+package com.example.bookAPI.dto.book.save;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

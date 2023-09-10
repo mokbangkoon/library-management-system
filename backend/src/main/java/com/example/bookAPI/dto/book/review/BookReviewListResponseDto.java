@@ -8,11 +8,7 @@ import java.time.LocalDateTime;
 
 public interface BookReviewListResponseDto extends BookListResponseDto {
     String getContent();
-
     String getName();
-
     BigDecimal getRating();
-
     LocalDateTime getCreateDateTime();
-
 }

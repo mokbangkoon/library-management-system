@@ -3,8 +3,9 @@ package com.example.bookAPI.repository;
 import com.example.bookAPI.domain.Book;
 import com.example.bookAPI.dto.book.best.BookBestListResponseDto;
 import com.example.bookAPI.dto.book.best.BookBestResponseDto;
-import com.example.bookAPI.dto.book.BookCountPerCategoryResponseDto;
+import com.example.bookAPI.dto.book.count.BookCountPerCategoryResponseDto;
 import com.example.bookAPI.dto.book.category.BookTeamCategoryResponseDto;
+import com.example.bookAPI.dto.book.detail.BookDetailResponseDto;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseListResponseDto;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseResponseDto;
 import com.example.bookAPI.dto.book.review.BookReviewListResponseDto;
@@ -212,4 +213,34 @@ public interface BookRepository extends JpaRepository<Book,Long> {
             "WHERE c.name = :categoryName " +
             "GROUP BY sub.name", nativeQuery = true)
     List<BookCountPerCategoryResponseDto> countBySubCategory(@Param("categoryName") String categoryName);
+
+    @Query(value = "SELECT new com.example.bookAPI.dto.book.detail.BookDetailResponseDto(" +
+            "b.bookId, " +
+            "b.title, " +
+            "b.writer, " +
+            "b.img, " +
+            "b.publisher, " +
+            "b.subtitle, " +
+            "CONCAT(main.name, ' > ', sub.name, ' > ', detail.name), " +
+            "COUNT(bs.sharerId.memberId), " +
+            "COUNT(bs.requesterId.memberId), " +
+            "coalesce(avg(br.rating),0), " +
+            "COUNT(br.reviewId), " +
+            "b.publishDate, " +
+            "b.count, " +
+            "b.detailNum, " +
+            "b.introduce, " +
+            "b.isEbook, " +
+            "CASE WHEN MIN(bs.sharerId.memberId) = :memberId THEN TRUE ELSE FALSE END, " +
+            "CASE WHEN MIN(bs.requesterId.memberId) = :memberId THEN TRUE ELSE FALSE END ) " +
+            "FROM Book b " +
+            "JOIN b.category detail " +
+            "LEFT JOIN b.reviews br " +
+            "LEFT JOIN detail.parentCategory sub " +
+            "LEFT JOIN sub.parentCategory main " +
+            "LEFT JOIN b.bookShares bs " +
+            "WHERE b.bookId = :bookId " +
+            "GROUP BY b.bookId "
+    )
+    BookDetailResponseDto findByIdAndMemberId(@Param("bookId") Long bookId, @Param("memberId") Long memberId);
 }

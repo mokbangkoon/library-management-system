@@ -3,11 +3,13 @@ package com.example.bookAPI.service;
 import com.example.bookAPI.domain.Book;
 import com.example.bookAPI.domain.Category;
 import com.example.bookAPI.dto.Enum.CategoryType;
-import com.example.bookAPI.dto.book.*;
 import com.example.bookAPI.dto.book.best.BookBestResponseDto;
 import com.example.bookAPI.dto.book.category.BookTeamCategoryResponseDto;
+import com.example.bookAPI.dto.book.count.BookCountPerCategoryResponseDto;
+import com.example.bookAPI.dto.book.detail.BookDetailResponseDto;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseResponseDto;
 import com.example.bookAPI.dto.book.review.BookReviewResponseDto;
+import com.example.bookAPI.dto.book.save.BookSaveRequestDto;
 import com.example.bookAPI.dto.book.search.BookSearchResponseDto;
 import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResponseDto;
 import com.example.bookAPI.repository.BookRepository;
@@ -238,5 +240,9 @@ public class BookService {
     public List<BookCountPerCategoryResponseDto> getBookCountPerSubCategory(int categoryId) {
         String categoryName = getCategoryName(categoryId);
         return bookRepository.countBySubCategory(categoryName);
+    }
+
+    public BookDetailResponseDto getBookById(Long bookId, Long memberId) {
+        return bookRepository.findByIdAndMemberId(bookId, memberId);
     }
 }
