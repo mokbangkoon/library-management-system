@@ -158,7 +158,7 @@ const MainPage = () => {
           />
         </div>
 
-        <div className="flex items-center flex-col items-center">
+        <div className="flex flex-col items-center">
           <MainBook
             key="share-card"
             data={shareProps.data}
