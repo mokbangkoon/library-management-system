@@ -1,7 +1,7 @@
+import find from '@assets/images/find.svg';
+import next from '@assets/images/next.svg';
+import share from '@assets/images/share.svg';
 import { Link } from 'react-router-dom';
-import find from '../../../../assets/images/find.svg';
-import next from '../../../../assets/images/next.svg';
-import share from '../../../../assets/images/share.svg';
 import styles from './shareAndBook.module.css';
 const ShareAndBookCard = ({
   idx,

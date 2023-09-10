@@ -1,27 +1,27 @@
-import classNames from 'classnames';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick-theme.css';
-import 'slick-carousel/slick/slick.css';
 import {
   getBestBooks,
   getPurchasedBooks,
   getReviewBooks,
   getShareAndFindBooks,
   getTeamBooks,
-} from '../../../../apis/api';
-import { mainParam } from '../../../../apis/apiParam';
-import { book } from '../../../../apis/apiResponse';
-import noBook from '../../../../assets/images/no-book.avif';
-import { NextButton } from '../../Button/slider/NextButton';
-import { PrevButton } from '../../Button/slider/PrevButton';
-import BestBookCard from '../../Card/bestBook/BestBookCard';
-import PurchasedBookCard from '../../Card/purchasedBook/PurchasedBookCard';
-import ReviewBookCard from '../../Card/reviewBook/ReviewBookCard';
-import ShareAndBookCard from '../../Card/shareAndBook/ShareAndBookCard';
-import TeamBookCard from '../../Card/teamBook/TeamBookCard';
-import styles from './MainBook.module.css'; // 파일명 수정
+} from '@apis/api';
+import { mainParam } from '@apis/apiParam';
+import { book } from '@apis/apiResponse';
+import noBook from '@assets/images/no-book.avif';
+import { NextButton } from '@components/Common/Button/slider/NextButton';
+import { PrevButton } from '@components/Common/Button/slider/PrevButton';
+import BestBookCard from '@components/Common/Card/bestBook/BestBookCard';
+import PurchasedBookCard from '@components/Common/Card/purchasedBook/PurchasedBookCard';
+import ReviewBookCard from '@components/Common/Card/reviewBook/ReviewBookCard';
+import ShareAndBookCard from '@components/Common/Card/shareAndBook/ShareAndBookCard';
+import TeamBookCard from '@components/Common/Card/teamBook/TeamBookCard';
+import styles from '@src/components/Common/List/main/MainBook.module.css';
+import classNames from 'classnames';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 
 const MainBook = ({
   data,

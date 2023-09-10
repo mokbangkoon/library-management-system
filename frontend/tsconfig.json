@@ -5,8 +5,26 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "baseUrl": ".", // 현재 디렉토리를 기준으로 한다.
     "paths": {
-      "@/*": ["./src/*"] 
+      "@src/*": [   //@src로 시작하면 아래 줄의 디렉토리를 의미한다.
+        "src/*"		//baseUrl을 기준으로 src/ 하위 디렉토리를 @src로 표현
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@pages/*": [
+        "src/pages/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@apis/*": [
+        "src/apis/*"
+      ],
     },
 
     /* Bundler mode */
