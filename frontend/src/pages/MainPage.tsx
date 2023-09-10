@@ -2,23 +2,20 @@ import { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
-import { mainParam } from '../apis/apiParam';
-import { book } from '../apis/apiResponse';
-import { Department } from '../apis/enum';
 import {
   getBestBooks,
   getPurchasedBooks,
   getReviewBooks,
   getShareAndFindBooks,
   getTeamBooks,
-} from '../apis/mainAndListApi';
+} from '../apis/api';
+import { mainParam } from '../apis/apiParam';
+import { book } from '../apis/apiResponse';
+import { Department } from '../apis/enum';
 import event1 from '../assets/images/event1.png';
 import event2 from '../assets/images/event2.jpeg';
 import event3 from '../assets/images/event3.png';
-import LoginButton from '../components/Common/Button/LoginButton';
-import SearchInput from '../components/Common/Input/SearchInput';
 import MainBook from '../components/Common/List/main/MainBook';
-import MainTab from '../components/Common/Tab/MainTab';
 import styles from './mainPage.module.css';
 
 const MainPage = () => {
@@ -46,6 +43,8 @@ const MainPage = () => {
   const [FindData, setFindData] = useState<book[]>([]);
   const [reviewData, setReviewData] = useState<book[]>([]);
   const [teamData, setTeamData] = useState<book[]>([]);
+  const [user, setUser] = useState(null);
+  const authenticated = user == null ? false : true;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -125,16 +124,6 @@ const MainPage = () => {
 
   return (
     <div className="max-w-[1920px]">
-      <div>
-        <div className="flex justify-between items-center max-w-[1200px] m-auto pt-6 pb-6 h-16">
-          <MainTab />
-          <div className="flex items-center">
-            <SearchInput />
-            <LoginButton />
-          </div>
-        </div>
-        <div className="h-[3px] bg-[#DFDFDF]"></div>
-      </div>
       <div className={styles.event}>
         <Slider {...settings}>
           <div className={styles.eventWrapper}>

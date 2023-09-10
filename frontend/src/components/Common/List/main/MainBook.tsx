@@ -1,17 +1,18 @@
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
-import { mainParam } from '../../../../apis/apiParam';
-import { book } from '../../../../apis/apiResponse';
 import {
   getBestBooks,
   getPurchasedBooks,
   getReviewBooks,
   getShareAndFindBooks,
   getTeamBooks,
-} from '../../../../apis/mainAndListApi';
+} from '../../../../apis/api';
+import { mainParam } from '../../../../apis/apiParam';
+import { book } from '../../../../apis/apiResponse';
 import noBook from '../../../../assets/images/no-book.avif';
 import { NextButton } from '../../Button/slider/NextButton';
 import { PrevButton } from '../../Button/slider/PrevButton';
@@ -201,19 +202,25 @@ const MainBook = ({
               return loading ? (
                 <div key={book.id}></div>
               ) : (
-                <Component
-                  idx={idx}
+                <Link
+                  to={`/book/${book.id}`}
+                  style={{ color: 'inherit', textDecoration: 'inherit' }}
                   key={book.id}
-                  img={book.img}
-                  title={book.title}
-                  writer={book.writer}
-                  categories={book?.categories}
-                  rating={book?.rating}
-                  content={book?.content}
-                  name={book?.name}
-                  createDateTime={book?.createDateTime}
-                  type={type}
-                />
+                >
+                  <Component
+                    idx={idx}
+                    key={book.id}
+                    img={book.img}
+                    title={book.title}
+                    writer={book.writer}
+                    categories={book?.categories}
+                    rating={book?.rating}
+                    content={book?.content}
+                    name={book?.name}
+                    createDateTime={book?.createDateTime}
+                    type={type}
+                  />
+                </Link>
               );
             })}
           </Slider>
@@ -232,10 +239,31 @@ const MainBook = ({
               const Component = componentMap[type];
               return loading ? (
                 <div key={book.id}></div>
+              ) : type == 'best' || type =='team' ? (
+                <Link
+                  to={`/book/${book.id}`}
+                    style={{ color: 'inherit', textDecoration: 'inherit' }}
+                    key={book.id}
+                >
+                  <Component
+                    idx={idx}
+                    key={book.id}
+                    img={book.img}
+                    title={book.title}
+                    writer={book.writer}
+                    categories={book?.categories}
+                    rating={book?.rating}
+                    content={book?.content}
+                    name={book?.name}
+                    createDateTime={book?.createDateTime}
+                    type={type}
+                  />
+                </Link>
               ) : (
                 <Component
                   idx={idx}
                   key={book.id}
+                  bookId={book.id}
                   img={book.img}
                   title={book.title}
                   writer={book.writer}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getSearchedBooks } from '../../../apis/mainAndListApi';
+import { getSearchedBooks } from '../../../apis/api';
 import SearchSelectBox from '../SelectBox/SearchSelectBox';
 
 const SearchInput = () => {

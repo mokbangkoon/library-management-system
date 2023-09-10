@@ -1,2 +1,5 @@
-const DetailPage = () => {};
+
+const DetailPage = () => {
+  return
+};
 export default DetailPage;
