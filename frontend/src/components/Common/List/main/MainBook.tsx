@@ -204,7 +204,8 @@ const MainBook = ({
               ) : (
                 <Link
                   to={`/book/${book.id}`}
-                    style={{ color: 'inherit', textDecoration: 'inherit' }}
+                  style={{ color: 'inherit', textDecoration: 'inherit' }}
+                  key={book.id}
                 >
                   <Component
                     idx={idx}
@@ -238,12 +239,11 @@ const MainBook = ({
               const Component = componentMap[type];
               return loading ? (
                 <div key={book.id}></div>
-              ) : type == 'best' ? (
+              ) : type == 'best' || type =='team' ? (
                 <Link
                   to={`/book/${book.id}`}
-                  style={{ color: 'inherit', textDecoration: 'inherit' }}
-                  key={idx}
-                  className="block"
+                    style={{ color: 'inherit', textDecoration: 'inherit' }}
+                    key={book.id}
                 >
                   <Component
                     idx={idx}
