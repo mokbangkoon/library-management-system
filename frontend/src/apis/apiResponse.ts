@@ -16,6 +16,10 @@ export interface bookList extends book {
   findCount: number;
 }
 
+export interface bookDetail extends bookList {
+  
+}
+
 interface pagination {
   currentPage: number;
   lastPage: number;

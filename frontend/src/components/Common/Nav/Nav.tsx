@@ -1,8 +1,8 @@
+import LoginButton from '@components/Common/Button/LoginButton';
+import SearchInput from '@components/Common/Input/SearchInput';
+import MainTab from '@components/Common/Tab/MainTab';
 import { FC, useState } from 'react';
 import 'semantic-ui-css/semantic.min.css';
-import LoginButton from '../../Common/Button/LoginButton';
-import SearchInput from '../../Common/Input/SearchInput';
-import MainTab from '../../Common/Tab/MainTab';
 
 const Nav: FC<any> = (props) => {
   const [user, setUser] = useState(null);

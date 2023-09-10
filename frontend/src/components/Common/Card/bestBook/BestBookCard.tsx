@@ -1,4 +1,4 @@
-import star from '../../../../assets/images/star.svg';
+import star from '@assets/images/star.svg';
 import styles from './bestBook.module.css';
 const BestBookCard = ({
   idx,

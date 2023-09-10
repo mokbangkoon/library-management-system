@@ -1,6 +1,6 @@
+import { getSearchedBooks } from '@apis/api';
+import SearchSelectBox from '@components/Common/SelectBox/SearchSelectBox';
 import { useState } from 'react';
-import { getSearchedBooks } from '../../../apis/api';
-import SearchSelectBox from '../SelectBox/SearchSelectBox';
 
 const SearchInput = () => {
   const [filter, setFilter] = useState(1);

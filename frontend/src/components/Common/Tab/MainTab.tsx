@@ -1,5 +1,5 @@
+import logo from '@assets/images/icon-ubcare.png';
 import { useState } from 'react';
-import logo from '../../../assets/images/icon-ubcare.png';
 
 const MainTab = () => {
   const [isActive, setIsActive] = useState({
