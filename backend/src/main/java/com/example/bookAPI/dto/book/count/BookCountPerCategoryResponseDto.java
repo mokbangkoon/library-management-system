@@ -1,4 +1,4 @@
-package com.example.bookAPI.dto.book;
+package com.example.bookAPI.dto.book.count;
 
 import lombok.*;
 

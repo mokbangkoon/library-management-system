@@ -2,31 +2,36 @@ package com.example.bookAPI.controller;
 
 import com.example.bookAPI.dto.Enum.CategoryType;
 import com.example.bookAPI.dto.Pagination;
-import com.example.bookAPI.dto.book.*;
 import com.example.bookAPI.dto.book.best.BookBestResponseDto;
 import com.example.bookAPI.dto.book.best.BookBestResult;
 import com.example.bookAPI.dto.book.category.BookTeamCategoryResponseDto;
 import com.example.bookAPI.dto.book.category.BookTeamCategoryResult;
+import com.example.bookAPI.dto.book.count.BookCountPerCategoryResponseDto;
+import com.example.bookAPI.dto.book.detail.BookDetailResponseDto;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseResponseDto;
 import com.example.bookAPI.dto.book.purchase.BookPurchaseResult;
 import com.example.bookAPI.dto.book.review.BookReviewResponseDto;
 import com.example.bookAPI.dto.book.review.BookReviewResult;
+import com.example.bookAPI.dto.book.save.BookSaveRequestDto;
 import com.example.bookAPI.dto.book.search.BookSearchResponseDto;
 import com.example.bookAPI.dto.book.search.BookSearchResult;
 import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResponseDto;
 import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResult;
+import com.example.bookAPI.security.jwt.token.JwtProperties;
+import com.example.bookAPI.security.jwt.util.JwtTokenizer;
 import com.example.bookAPI.service.BookService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Api(tags = "BookApiController", description = "책 API")
@@ -37,6 +42,9 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+    private final JwtTokenizer jwtTokenizer;
+    @Autowired
+    private HttpServletRequest request;
 
     @Operation(summary = "책 검색", description = "책 통합(제목, 저자, 출판사, 소개 합침) 제목, 저자, 출판사, 소개로 검색한 책 리스트 반환")
     @GetMapping("/search")
@@ -169,4 +177,14 @@ public class BookController {
         bookService.saveBooks(books);
     }
 
+
+    @Operation(summary = "책 id 별 상세 조회", description = "책 id에 해당하는 책 객체 반환")
+    @GetMapping("/{bookId}")
+    public BookDetailResponseDto getBook(
+            @Parameter(description = "책 id", required = true) @PathVariable(name = "bookId", required = true) Long bookId
+            ) {
+        String token = request.getHeader(JwtProperties.HEADER_STRING);
+        Long memberId = jwtTokenizer.getUserIdFromToken(token);
+        return bookService.getBookById(bookId, memberId);
+    }
 }
