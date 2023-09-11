@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import TitleText from '@src/components/Common/TitleText';
 import { useParams } from 'react-router';
+import BookListPage from './list/BookListPage';
 import {
   getCategoryBook,
   getPurchasedBooks,
@@ -15,13 +16,16 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getCategoryCount();
+        const categoryCountResponse = await getCategoryCount();
+
         if (params.id === 'ECONOMICS_MANAGEMENT') {
-          response.forEach((el: { name: string; count: number }) => {
-            if (el.name === '경제/경영') {
-              setSubtitle(`총 ${el.count} 권`);
-            }
-          });
+          categoryCountResponse.forEach(
+            (el: { name: string; count: number }) => {
+              if (el.name === '경제/경영') {
+                setSubtitle(`총 ${el.count} 권`);
+              }
+            },
+          );
         }
       } catch (error) {
         console.error('Error fetching data', error);
@@ -32,10 +36,12 @@ const CategoryPage = () => {
   }, [params.id]);
 
   const [subtitle, setSubtitle] = useState('');
+  const [bookList, setBookList] = useState([]);
 
   return (
     <div>
       <TitleText title={title} subTitle={subtitle} />
+      <BookListPage />
     </div>
   );
 };

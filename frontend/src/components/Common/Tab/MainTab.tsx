@@ -1,7 +1,7 @@
 import logo from '@assets/images/icon-ubcare.png';
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
+import { Category } from '@src/apis/enum';
 const MainTab = () => {
   const location = useLocation();
   useEffect(() => {
@@ -24,25 +24,6 @@ const MainTab = () => {
     myBook: false,
     category: false,
   });
-
-  const category = [
-    {
-      id: 'ECONOMICS_MANAGEMENT',
-      value: '경제/경영',
-    },
-    {
-      id: 'SCIENCE',
-      value: '과학',
-    },
-    {
-      id: 'SELF_IMPROVEMENT',
-      value: '자기개발',
-    },
-    {
-      id: 'ART_ARCHITECTURE',
-      value: '예술',
-    },
-  ];
 
   const clickTab = (name: keyof typeof isActive) => {
     setIsActive(() => ({
@@ -67,7 +48,7 @@ const MainTab = () => {
               ? 'tab-active tab tab-bordered h-full !border-[#FF6600] text-[#FF6600] text-xl'
               : 'tab text-[#868E96] text-xl'
           }
-          onClick={() => clickTab('today')} h
+          onClick={() => clickTab('today')}
         >
           투데이
         </Link>
@@ -97,7 +78,7 @@ const MainTab = () => {
         </Link>
 
         <Link
-          to={`/category/${category[0].id}`}
+          to={`/category/${Category['경제/경영']}`}
           className={
             isActive['category']
               ? 'tab-active tab tab-bordered h-full !border-[#FF6600] text-[#FF6600] text-xl'
