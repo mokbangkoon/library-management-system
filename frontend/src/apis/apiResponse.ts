@@ -17,7 +17,16 @@ export interface bookList extends book {
 }
 
 export interface bookDetail extends bookList {
-  
+  avgRating: number;
+  count: number;
+  detailNum: string;
+  findCount: number;
+  introduce: string;
+  isEBook: true;
+  isFind: true;
+  isShare: true;
+  publishDate: string;
+  subtitle: string;
 }
 
 interface pagination {

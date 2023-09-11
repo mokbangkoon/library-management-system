@@ -67,7 +67,7 @@ const MainTab = () => {
               ? 'tab-active tab tab-bordered h-full !border-[#FF6600] text-[#FF6600] text-xl'
               : 'tab text-[#868E96] text-xl'
           }
-          onClick={() => clickTab('today')}
+          onClick={() => clickTab('today')} h
         >
           투데이
         </Link>

@@ -17,7 +17,6 @@ const CategoryPage = () => {
       try {
         const response = await getCategoryCount();
         if (params.id === 'ECONOMICS_MANAGEMENT') {
-          console.log(response);
           response.forEach((el: { name: string; count: number }) => {
             if (el.name === '경제/경영') {
               setSubtitle(`총 ${el.count} 권`);
