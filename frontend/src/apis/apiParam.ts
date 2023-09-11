@@ -15,3 +15,14 @@ export type loginParm = {
   email: string;
   password: string;
 };
+
+export type categoryParam = {
+  categoryType: string;
+  subCategory?: string;
+  page: number;
+  size: number;
+};
+
+export type categoryCountParam = {
+  categoryType: string;
+};
