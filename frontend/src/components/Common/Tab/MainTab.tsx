@@ -2,6 +2,7 @@ import logo from '@assets/images/icon-ubcare.png';
 import { Category } from '@src/apis/enum';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
 const MainTab = () => {
   const location = useLocation();
   useEffect(() => {
