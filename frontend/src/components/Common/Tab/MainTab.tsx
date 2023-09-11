@@ -17,7 +17,7 @@ const MainTab = () => {
     if (location.pathname === '/') {
       setIsActive({ ...isActive, today: true });
     }
-  }, []);
+  }, [location]);
   const [isActive, setIsActive] = useState({
     today: false,
     community: false,
@@ -25,9 +25,27 @@ const MainTab = () => {
     category: false,
   });
 
+  const category = [
+    {
+      id: 'ECONOMICS_MANAGEMENT',
+      value: '경제/경영',
+    },
+    {
+      id: 'SCIENCE',
+      value: '과학',
+    },
+    {
+      id: 'SELF_IMPROVEMENT',
+      value: '자기개발',
+    },
+    {
+      id: 'ART_ARCHITECTURE',
+      value: '예술',
+    },
+  ];
+
   const clickTab = (name: keyof typeof isActive) => {
-    setIsActive((prevState) => ({
-      ...prevState,
+    setIsActive(() => ({
       today: false,
       community: false,
       myBook: false,
@@ -79,7 +97,7 @@ const MainTab = () => {
         </Link>
 
         <Link
-          to="/category"
+          to={`/category/${category[0].id}`}
           className={
             isActive['category']
               ? 'tab-active tab tab-bordered h-full !border-[#FF6600] text-[#FF6600] text-xl'

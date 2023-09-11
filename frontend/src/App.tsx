@@ -19,7 +19,7 @@ function App() {
           <Route path="/book/:id" element={<DetailPage />} />{' '}
           <Route path="/community" element={<CommunityPage />} />{' '}
           <Route path="/mybook" element={<MyBookPage />} />{' '}
-          <Route path="/category" element={<CategoryPage />} />{' '}
+          <Route path="/category/:id" element={<CategoryPage />} />{' '}
         </Routes>
       </Router>
     </div>

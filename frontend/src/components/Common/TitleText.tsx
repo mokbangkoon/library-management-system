@@ -1,4 +1,9 @@
-const TitleText = () => {
-  return <div>타이틀 텍스트입니다</div>;
+const TitleText = ({ title, subTitle }) => {
+  return (
+    <div>
+      <div>{title}</div>
+      <div>{subTitle}</div>
+    </div>
+  );
 };
 export default TitleText;

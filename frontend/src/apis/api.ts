@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { detailParam, loginParm, mainParam } from './apiParam';
+import {
+  detailParam,
+  loginParm,
+  mainParam,
+  categoryParam,
+  categoryCountParam,
+} from './apiParam';
 
 export const getPurchasedBooks = async (param: mainParam) => {
   const { page, size, type } = param;
@@ -106,6 +112,46 @@ export const login = async (params: loginParm) => {
       email: params.email,
       password: params.password,
     });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data', error);
+  }
+};
+
+export const getCategoryBook = async (params: categoryParam) => {
+  try {
+    const { categoryType, subCategory, page, size } = params;
+    const url = `http://localhost:8080/books/category/${categoryType}`;
+
+    let queryParams;
+    if (subCategory) {
+      queryParams = { subCategory, page, size };
+    } else {
+      queryParams = { page, size };
+    }
+
+    const response = await axios.get(url, { params: queryParams });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data', error);
+  }
+};
+
+export const getSubcategoryBookCount = async (params: categoryCountParam) => {
+  try {
+    const { categoryType } = params;
+    const url = `http://localhost:8080/books/category/${categoryType}/subCategory/count`;
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data', error);
+  }
+};
+
+export const getCategoryCount = async () => {
+  try {
+    const url = `http://localhost:8080/books/category/count`;
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     console.error('Error fetching data', error);
