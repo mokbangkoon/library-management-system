@@ -12,6 +12,8 @@ const LoginButton = ({ authenticated, setUser }) => {
       localStorage.setItem('refresh-token', res.refreshToken);
     } else {
       setUser(null);
+      localStorage.removeItem('access-token');
+      localStorage.removeItem('refresh-token');
     }
   };
 
