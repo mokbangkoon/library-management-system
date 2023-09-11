@@ -15,13 +15,13 @@ import PurchasedBookCard from '@components/Common/Card/purchasedBook/PurchasedBo
 import ReviewBookCard from '@components/Common/Card/reviewBook/ReviewBookCard';
 import ShareAndBookCard from '@components/Common/Card/shareAndBook/ShareAndBookCard';
 import TeamBookCard from '@components/Common/Card/teamBook/TeamBookCard';
-import styles from '@src/components/Common/List/main/MainBook.module.css';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
+import styles from './MainBook.module.css';
 
 const MainBook = ({
   data,
@@ -202,11 +202,7 @@ const MainBook = ({
               return loading ? (
                 <div key={book.id}></div>
               ) : (
-                <Link
-                  to={`/book/${book.id}`}
-                  style={{ color: 'inherit', textDecoration: 'inherit' }}
-                  key={book.id}
-                >
+                <Link to={`/book/${book.id}`} className="link" key={book.id}>
                   <Component
                     idx={idx}
                     key={book.id}

@@ -71,3 +71,9 @@
 .slick-slider .slick-initialized {
   position: relative;
 }
+
+
+.custom-Link {
+  color: black;
+  text-decoration: none;
+}

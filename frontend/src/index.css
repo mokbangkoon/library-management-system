@@ -158,6 +158,10 @@ a {
   text-decoration: none;
   outline: none;
 }
-a:-webkit-any-link {
+.link {
   text-decoration: none;
+  color: black;
+}
+.link:hover {
+  color: none
 }

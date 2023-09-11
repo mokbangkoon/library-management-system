@@ -1,0 +1,10 @@
+.detailTab {
+  width: 1200px;
+  height: 2px;
+  flex-shrink: 0;
+  border-bottom:2px solid var(--gray-gray-600, #868E96);
+}
+
+.introduce{
+  white-space: pre-line
+}
