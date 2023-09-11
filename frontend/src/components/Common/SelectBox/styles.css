@@ -4,9 +4,19 @@
 }
 .ui.selection.dropdown {
   min-width: 7.143rem !important;
-  font-family: Pretendard-Regular;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: -0.6000000238418579px;
   text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+.ui.dropdown>.text{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
