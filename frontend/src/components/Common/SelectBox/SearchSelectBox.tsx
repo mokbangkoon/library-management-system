@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import './styles.css';
-//
+import 'semantic-ui-css/semantic.min.css';
 import { DropdownProps, Select } from 'semantic-ui-react';
+import './styles.css';
 
 const SearchSelectBox = ({ setFilter }) => {
   const [isOpen, setIsOpen] = useState(false);
