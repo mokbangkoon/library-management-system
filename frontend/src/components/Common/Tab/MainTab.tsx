@@ -16,7 +16,7 @@ const MainTab = () => {
 
       if (location.pathname.includes('community')) {
         newActiveState.community = true;
-      } else if (location.pathname.includes('mybook')) {
+      } else if (location.pathname.includes('my-book')) {
         newActiveState.myBook = true;
       } else if (location.pathname.includes('category')) {
         newActiveState.category = true;
@@ -46,9 +46,11 @@ const MainTab = () => {
 
   return (
     <div className="flex items-center">
-      <div className="mr-10">
-        <img src={logo} alt="logo" />
-      </div>
+      <Link to="/">
+        <div className="mr-10">
+          <img src={logo} alt="logo" />
+        </div>
+      </Link>
       <div className="tabs font-B h-16 flex items-center">
         <Link
           to="/"
@@ -75,7 +77,7 @@ const MainTab = () => {
         </Link>
 
         <Link
-          to="/mybook"
+          to="/my-book"
           className={
             isActive['myBook']
               ? 'tab-active tab tab-bordered h-full !border-[#FF6600] text-[#FF6600] text-xl'

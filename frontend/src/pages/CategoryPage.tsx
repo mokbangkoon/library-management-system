@@ -1,27 +1,28 @@
-import { useEffect, useState } from 'react';
-import TitleText from '@src/components/Common/TitleText';
-import { Link, useParams } from 'react-router-dom';
-import BookListPage from './list/BookListPage';
 import {
   getCategoryBook,
-  getPurchasedBooks,
-  getSubcategoryBookCount,
   getCategoryCount,
+  getSubcategoryBookCount
 } from '@src/apis/api';
-import { Category } from '@src/apis/enum';
+import TitleText from '@src/components/Common/TitleText';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import BookListPage from './list/BookListPage';
 
 const CategoryPage = () => {
   const params = useParams();
-  const title = '최근 구매한 책들이에요';
+  console.log(params.id)
+  const title = '카테고리 별 책들이에요.';
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const categoryCountResponse = await getCategoryCount();
-
-        if (params.id === 'ECONOMICS_MANAGEMENT') {
+        const subCategoryCountResponse = await getSubcategoryBookCount({
+          categoryId: params.id
+       });
+        console.log(subCategoryCountResponse);
           const bookListData = await getCategoryBook({
-            categoryType: 'ECONOMICS_MANAGEMENT',
+            categoryId: params.id,
             page: 1,
             size: 20,
           });
@@ -34,7 +35,6 @@ const CategoryPage = () => {
             },
           );
           setBookList(bookListData);
-        }
       } catch (error) {
         console.error('Error fetching data', error);
       }

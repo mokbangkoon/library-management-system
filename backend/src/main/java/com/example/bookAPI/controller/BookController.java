@@ -145,15 +145,15 @@ public class BookController {
     }
 
     @Operation(summary = "카테고리 별 책 리스트 조회", description = "최 상위 카테고리로 책 리스트 반환")
-    @GetMapping("/category/{categoryType}")
+    @GetMapping("/category/{categoryId}")
     public BookSearchResult getBooksByCategory(
-            @Parameter(description = "카테고리 타입", required = true) @PathVariable(name = "categoryType", required = true) CategoryType categoryType,
+            @Parameter(description = "카테고리 타입", required = true , schema = @Schema(type = "integer", allowableValues = {"1","2","3","4","5","6","7,","9","10","11","12","13","14","15","16","17","18","19","20","21","22"}), example = "1") @PathVariable(name = "categoryId", required = true) int categoryId,
             @Parameter(description = "서브 카테고리 명") @RequestParam(value = "subCategory", required = false) String subCategory,
             @Parameter(description = "조회 페이지", required = true, example = "0")  @RequestParam(value = "page", defaultValue = "1") int page,
             @Parameter(description = "조회 사이즈", required = true, example = "10")  @RequestParam(value = "size", defaultValue = "10") int size
     ){
         PageRequest pageable = PageRequest.of(page-1, size , Sort.by(Sort.Direction.DESC, "createDateTime"));
-        Page<BookSearchResponseDto> resultPage = bookService.getBooksByCategory(categoryType.getId(), subCategory, pageable);
+        Page<BookSearchResponseDto> resultPage = bookService.getBooksByCategory(categoryId, subCategory, pageable);
         return new BookSearchResult(resultPage.getContent(), resultPage.getTotalPages(), resultPage.getTotalElements(), resultPage.getNumber()+1, resultPage.isLast());
     }
 
@@ -164,11 +164,11 @@ public class BookController {
     }
 
     @Operation(summary = "서브 카테고리 별 책 갯수 조회", description = "서브 카테고리에 해당하는 책 전체 갯수 리스트 반환")
-    @GetMapping("/category/{categoryType}/subCategory/count")
+    @GetMapping("/category/{categoryId}/subCategory/count")
     public List<BookCountPerCategoryResponseDto> getBookCountPerSubCategory(
-            @Parameter(description = "카테고리 타입", required = true) @PathVariable(name = "categoryType", required = true) CategoryType categoryType
+            @Parameter(description = "카테고리 타입", required = true , schema = @Schema(type = "integer", allowableValues = {"1","2","3","4","5","6","7,","9","10","11","12","13","14","15","16","17","18","19","20","21","22"}), example = "1") @PathVariable(name = "categoryId", required = true) int categoryId
             ){
-        return bookService.getBookCountPerSubCategory(categoryType.getId());
+        return bookService.getBookCountPerSubCategory(categoryId);
     }
 
     @Operation(summary = "책 리스트 저장", description = "스크래핑으로 받은 책 리스트 저장")

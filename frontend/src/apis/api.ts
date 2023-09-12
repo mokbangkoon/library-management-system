@@ -1,10 +1,10 @@
 import axios from 'axios';
 import {
+  categoryCountParam,
+  categoryParam,
   detailParam,
   loginParm,
   mainParam,
-  categoryParam,
-  categoryCountParam,
 } from './apiParam';
 
 export const getPurchasedBooks = async (param: mainParam) => {
@@ -120,8 +120,8 @@ export const login = async (params: loginParm) => {
 
 export const getCategoryBook = async (params: categoryParam) => {
   try {
-    const { categoryType, subCategory, page, size } = params;
-    const url = `http://localhost:8080/books/category/${categoryType}`;
+    const { categoryId, subCategory, page, size } = params;
+    const url = `http://localhost:8080/books/category/${categoryId}`;
 
     let queryParams;
     if (subCategory) {
@@ -139,8 +139,8 @@ export const getCategoryBook = async (params: categoryParam) => {
 
 export const getSubcategoryBookCount = async (params: categoryCountParam) => {
   try {
-    const { categoryType } = params;
-    const url = `http://localhost:8080/books/category/${categoryType}/subCategory/count`;
+    const { categoryId } = params;
+    const url = `http://localhost:8080/books/category/${categoryId}/subCategory/count`;
     const response = await axios.get(url);
     return response.data;
   } catch (error) {
