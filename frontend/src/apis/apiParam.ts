@@ -17,14 +17,14 @@ export type loginParm = {
 };
 
 export type categoryParam = {
-  categoryType: string;
+  categoryId: string;
   subCategory?: string;
   page: number;
   size: number;
 };
 
 export type categoryCountParam = {
-  categoryType: string;
+  categoryId: string;
 };
 
 export type reviewParam = {

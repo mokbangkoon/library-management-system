@@ -9,7 +9,7 @@ export enum Department {
 }
 
 export enum Category {
-  '경제/경영' = 'ECONOMICS_MANAGEMENT',
+  '경제/경영' = 1,
   '자기계발' = 'SELF_IMPROVEMENT',
   '정치/사회' = 'POLITICS_SOCIETY',
   '컴퓨터/IT' = 'COMPUTER_IT',
