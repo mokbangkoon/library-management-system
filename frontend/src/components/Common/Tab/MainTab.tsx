@@ -6,18 +6,26 @@ import { Link, useLocation } from 'react-router-dom';
 const MainTab = () => {
   const location = useLocation();
   useEffect(() => {
-    if (location.pathname.includes('community')) {
-      setIsActive({ ...isActive, community: true });
-    }
-    if (location.pathname.includes('myBook')) {
-      setIsActive({ ...isActive, myBook: true });
-    }
-    if (location.pathname.includes('category')) {
-      setIsActive({ ...isActive, category: true });
-    }
-    if (location.pathname === '/') {
-      setIsActive({ ...isActive, today: true });
-    }
+    setIsActive((prevState) => {
+      const newActiveState = {
+        today: false,
+        community: false,
+        myBook: false,
+        category: false,
+      };
+
+      if (location.pathname.includes('community')) {
+        newActiveState.community = true;
+      } else if (location.pathname.includes('mybook')) {
+        newActiveState.myBook = true;
+      } else if (location.pathname.includes('category')) {
+        newActiveState.category = true;
+      } else if (location.pathname === '/') {
+        newActiveState.today = true;
+      }
+
+      return { ...prevState, ...newActiveState };
+    });
   }, [location]);
   const [isActive, setIsActive] = useState({
     today: false,

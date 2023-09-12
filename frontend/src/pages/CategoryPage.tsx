@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import TitleText from '@src/components/Common/TitleText';
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router-dom';
 import BookListPage from './list/BookListPage';
 import {
   getCategoryBook,
@@ -8,6 +8,7 @@ import {
   getSubcategoryBookCount,
   getCategoryCount,
 } from '@src/apis/api';
+import { Category } from '@src/apis/enum';
 
 const CategoryPage = () => {
   const params = useParams();
@@ -19,6 +20,12 @@ const CategoryPage = () => {
         const categoryCountResponse = await getCategoryCount();
 
         if (params.id === 'ECONOMICS_MANAGEMENT') {
+          const bookListData = await getCategoryBook({
+            categoryType: 'ECONOMICS_MANAGEMENT',
+            page: 1,
+            size: 20,
+          });
+
           categoryCountResponse.forEach(
             (el: { name: string; count: number }) => {
               if (el.name === '경제/경영') {
@@ -26,6 +33,7 @@ const CategoryPage = () => {
               }
             },
           );
+          setBookList(bookListData);
         }
       } catch (error) {
         console.error('Error fetching data', error);
@@ -41,7 +49,7 @@ const CategoryPage = () => {
   return (
     <div>
       <TitleText title={title} subTitle={subtitle} />
-      <BookListPage />
+      <BookListPage bookList={bookList} />
     </div>
   );
 };
