@@ -44,6 +44,7 @@
   font-weight: 700;
   line-height: 22px; /* 137.5% */
   letter-spacing: -0.6px;
+  padding-left: 4px;
 }
 .ratingCount{
   color: var(--gray-gray-600, #868E96);

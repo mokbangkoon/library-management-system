@@ -19,6 +19,7 @@ export interface bookList extends book {
 export interface bookDetail extends bookList {
   avgRating: number;
   count: number;
+  reviewCount: number;
   detailNum: string;
   findCount: number;
   introduce: string;
