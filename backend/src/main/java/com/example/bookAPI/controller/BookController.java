@@ -184,7 +184,7 @@ public class BookController {
             @Parameter(description = "책 id", required = true) @PathVariable(name = "bookId", required = true) Long bookId
             ) {
         String token = request.getHeader(JwtProperties.HEADER_STRING);
-        Long memberId = jwtTokenizer.getUserIdFromToken(token);
+        Long memberId = token == null ? 0 : jwtTokenizer.getUserIdFromToken(token);
         return bookService.getBookById(bookId, memberId);
     }
 }
