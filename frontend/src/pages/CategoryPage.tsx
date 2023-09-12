@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import TitleText from '@src/components/Common/TitleText';
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router-dom';
 import BookListPage from './list/BookListPage';
 import {
   getCategoryBook,
@@ -8,6 +8,7 @@ import {
   getSubcategoryBookCount,
   getCategoryCount,
 } from '@src/apis/api';
+import { Category } from '@src/apis/enum';
 
 const CategoryPage = () => {
   const params = useParams();
@@ -41,7 +42,10 @@ const CategoryPage = () => {
   return (
     <div>
       <TitleText title={title} subTitle={subtitle} />
-      <BookListPage />
+      <Link to={`/category/${Category['IT/프로그래밍']}`}>IT/프로그래밍</Link>
+      <Link to={`/category/${Category.과학}`}>과학</Link>
+      <Link to={`/category/${Category['기술/공학']}`}>기술/공학</Link>
+      <BookListPage params={params} />
     </div>
   );
 };
