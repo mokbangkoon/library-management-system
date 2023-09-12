@@ -26,3 +26,16 @@ export type categoryParam = {
 export type categoryCountParam = {
   categoryType: string;
 };
+
+export type reviewParam = {
+  page: number;
+  size: number;
+  bookId: number;
+};
+
+export type postParam = {
+  page: number;
+  size: number;
+  bookId: number;
+  postType: number;
+};

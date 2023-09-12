@@ -1,10 +1,12 @@
 import axios from 'axios';
 import {
+  categoryCountParam,
+  categoryParam,
   detailParam,
   loginParm,
   mainParam,
-  categoryParam,
-  categoryCountParam,
+  postParam,
+  reviewParam,
 } from './apiParam';
 
 export const getPurchasedBooks = async (param: mainParam) => {
@@ -99,6 +101,28 @@ export const getBook = async (params: detailParam) => {
           Authorization: token ? `Bearer ${token}` : null,
         },
       },
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data', error);
+  }
+};
+
+export const getReviews = async (params: reviewParam) => {
+  const { page, size, bookId } = params;
+  try {
+    const response = await axios.get(`http://localhost:8080/reviews/${bookId}?page=${page}&size=${size}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data', error);
+  }
+};
+
+export const getPosts = async (params: postParam) => {
+  const { page, size, postType, bookId } = params;
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/posts/${bookId}?postType=${postType}&page=${page}&size=${size}`,
     );
     return response.data;
   } catch (error) {

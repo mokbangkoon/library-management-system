@@ -1,7 +1,7 @@
-import { getBook } from "@apis/api";
-import { detailParam } from "@apis/apiParam";
+import { getBook, getPosts, getReviews } from "@apis/api";
 import { bookDetail } from "@apis/apiResponse";
 import bookIcon from '@assets/images/icon-book.svg';
+import StarIcon from '@mui/icons-material/Star';
 import Rating from '@mui/material/Rating';
 import DetailTab from "@src/components/Common/Tab/DetailTab";
 import { useEffect, useState } from "react";
@@ -17,16 +17,21 @@ const DetailPage = () => {
   useEffect(() => {
       const fetchData = async () => {
         try {
-          const data = await getBook(param);
-          console.log(data)
-          setDetailData(data);
-          const bookIntro = {
-            detailData: data?.detailNum,
-            introduce: data?.introduce,
-          };
-          tabData.push(bookIntro);
+          const [detailData, reviewData, reportData, studyData] =
+            await Promise.all([
+              getBook(param),
+              getReviews({ bookId: id, page: 1, size: 10 }),
+              getPosts({ bookId: id, postType: 1, page: 1, size: 10 }),
+              getPosts({ bookId: id, postType: 2, page: 1, size: 10 }),
+            ]);
+          setDetailData(detailData);
           
-          setTabData(tabData)
+          const bookIntro = {
+            detailNum: detailData?.detailNum,
+            introduce: detailData?.introduce,
+          };
+          const result = [bookIntro].concat(studyData, reportData, reviewData);
+          setTabData(result);
         } catch (error) {}
       };
 
@@ -68,10 +73,15 @@ const DetailPage = () => {
                 sx={{
                   color: '#F60',
                 }}
+                emptyIcon={
+                  <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                }
               />
             </div>
             <div className={styles.rating}>{detailData.avgRating}점</div>
-            <div className={styles.ratingCount}>({detailData.avgRating}명)</div>
+            <div className={styles.ratingCount}>
+              ({detailData.reviewCount}명)
+            </div>
           </div>
           <div className={styles.shareInfoWrapper}>
             <div className={styles.shareInfo}>책 정보</div>
