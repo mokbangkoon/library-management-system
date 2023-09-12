@@ -179,11 +179,14 @@ public interface BookRepository extends JpaRepository<Book,Long> {
     )
     Page<BookTeamCategoryListResponseDto> findListBookByTeamCategory(@Param("teamId") Long teamId, PageRequest pageable);
 
-    @Query(value = "SELECT new com.example.bookAPI.dto.book.search.BookSearchResponseDto(b.bookId, b.title, b.writer, b.publisher, b.img) " +
+    @Query(value = "SELECT new com.example.bookAPI.dto.book.search.BookSearchResponseDto(b.bookId, b.title, b.writer, b.publisher, b.img, " +
+            "COUNT(bs.sharerId.memberId), " +
+            "COUNT(bs.requesterId.memberId)) " +
             "FROM Book b " +
             "LEFT JOIN b.category detail "+
             "LEFT JOIN detail.parentCategory sub "+
             "LEFT JOIN sub.parentCategory c " +
+            "LEFT JOIN b.bookShares bs " +
             "WHERE c.parentCategory IS NULL " +
             "AND c.name = :categoryName " +
             "AND (:subCategory IS NULL OR sub.name = :subCategory) " +
