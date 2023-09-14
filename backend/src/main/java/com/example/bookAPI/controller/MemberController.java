@@ -44,7 +44,7 @@ public class MemberController {
 
     @Operation(summary = "이메일로 멤버 찾기", description = "이메일로 존재하는 멤버 찾기")
     @GetMapping("/{email}")
-    public Member findMember(@Parameter(description = "이메일", required = true, example = "minjae2246@gmail.com") @RequestParam String email){
+    public Optional<Member> findMember(@Parameter(description = "이메일", required = true, example = "minjae2246@gmail.com") @RequestParam String email){
         return memberService.findByEmail(email);
     }
 
@@ -94,27 +94,30 @@ public class MemberController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        Member member = memberService.findByEmail(memberLoginRequestDto.getEmail());
-        if(!passwordEncoder.matches(memberLoginRequestDto.getPassword(), member.getPassword())){
+        Optional<Member> member = memberService.findByEmail(memberLoginRequestDto.getEmail());
+        if(member.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        if(!passwordEncoder.matches(memberLoginRequestDto.getPassword(), member.get().getPassword())){
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
-        List<String> roles = member.getRoles().stream().map(Role::getName).collect(Collectors.toList());
+        List<String> roles = member.get().getRoles().stream().map(Role::getName).collect(Collectors.toList());
 
-        String accessToken = jwtTokenizer.createAccessToken(member.getMemberId(), member.getEmail(), member.getName(), roles);
-        String refreshToken = jwtTokenizer.createRefreshToken(member.getMemberId(), member.getEmail(), member.getName(), roles);
+        String accessToken = jwtTokenizer.createAccessToken(member.get().getMemberId(), member.get().getEmail(), member.get().getName(), roles);
+        String refreshToken = jwtTokenizer.createRefreshToken(member.get().getMemberId(), member.get().getEmail(), member.get().getName(), roles);
 
-        Optional<RefreshToken> refreshTokenByMemberId = refreshTokenService.findRefreshTokenByMemberId(member.getMemberId());
+        Optional<RefreshToken> refreshTokenByMemberId = refreshTokenService.findRefreshTokenByMemberId(member.get().getMemberId());
         if(refreshTokenByMemberId.isEmpty()){
             RefreshToken refreshTokenEntity = new RefreshToken();
             refreshTokenEntity.setValue(refreshToken);
-            refreshTokenEntity.setMember(member);
+            refreshTokenEntity.setMember(member.get());
             refreshTokenService.addRefreshToken(refreshTokenEntity);
         }
         MemberLoginResponseDto memberLoginResponseDto = MemberLoginResponseDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .memberId(member.getMemberId())
-                .name(member.getName())
+                .memberId(member.get().getMemberId())
+                .name(member.get().getName())
                 .build();
 
         return new ResponseEntity(memberLoginResponseDto, HttpStatus.OK);
