@@ -7,6 +7,7 @@ import {
   mainParam,
   postParam,
   reviewParam,
+  reviewRegisterParam,
 } from './apiParam';
 
 export const getPurchasedBooks = async (param: mainParam) => {
@@ -123,6 +124,29 @@ export const getPosts = async (params: postParam) => {
   try {
     const response = await axios.get(
       `http://localhost:8080/posts/${bookId}?postType=${postType}&page=${page}&size=${size}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data', error);
+  }
+};
+
+export const postReview = async (params: reviewRegisterParam) => {
+  const token = localStorage.getItem('access-token');
+  const { bookId, content, rating } = params;
+  try {
+    const response = await axios.post(
+      `http://localhost:8080/reviews`,
+      {
+        book_id: bookId,
+        content,
+        rating,
+      },
+      {
+        headers: {
+          Authorization: token && `Bearer ${token}`
+        },
+      }
     );
     return response.data;
   } catch (error) {

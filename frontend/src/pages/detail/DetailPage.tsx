@@ -1,42 +1,70 @@
-import { getBook, getPosts, getReviews } from "@apis/api";
-import { bookDetail } from "@apis/apiResponse";
+import { getBook, getPosts, getReviews } from '@apis/api';
+import { bookDetail } from '@apis/apiResponse';
 import bookIcon from '@assets/images/icon-book.svg';
 import StarIcon from '@mui/icons-material/Star';
 import Rating from '@mui/material/Rating';
-import DetailTab from "@src/components/Common/Tab/DetailTab";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { detailParam } from '@src/apis/apiParam';
+import DetailTab from '@src/components/Common/Tab/DetailTab';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './detail.module.css';
 
 const DetailPage = () => {
   const { id } = useParams();
+  const navigateTo = useNavigate();
+  const token = localStorage.getItem('access-token');
 
   const param: detailParam = { bookId: id };
   const [detailData, setDetailData] = useState<bookDetail>({});
-  const [tabData, setTabData] = useState([])
-  useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const [detailData, reviewData, reportData, studyData] =
-            await Promise.all([
-              getBook(param),
-              getReviews({ bookId: id, page: 1, size: 10 }),
-              getPosts({ bookId: id, postType: 1, page: 1, size: 10 }),
-              getPosts({ bookId: id, postType: 2, page: 1, size: 10 }),
-            ]);
-          setDetailData(detailData);
-          
-          const bookIntro = {
-            detailNum: detailData?.detailNum,
-            introduce: detailData?.introduce,
-          };
-          const result = [bookIntro].concat(studyData, reportData, reviewData);
-          setTabData(result);
-        } catch (error) {}
-      };
+  const [tabData, setTabData] = useState([]);
+  const [tabValue, setTabValue] = useState(0);
+  const [isNewReview, setIsNewReview] = useState(0)
 
-      fetchData();
-  }, []);
+  const clickFindBookBtn = (e) => {
+    if (!token) {
+      navigateTo('/login');
+    }  
+  };
+  const clickShareBookBtn = (e) => {
+    if (!token) {
+      navigateTo('/login');
+    }
+  };
+  const clickGetBookBtn = (e) => {
+    if (!token) {
+      navigateTo('/login');
+    }
+  };
+  const fetchNewReviews = async () => {
+    try {
+      const newReviewData = await getReviews({ bookId: id, page: 1, size: 10 });
+      return newReviewData;
+    } catch (error) {
+    }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [detailData, reviewData, reportData, studyData] =
+          await Promise.all([
+            getBook(param),
+            getReviews({ bookId: id, page: 1, size: 10 }),
+            getPosts({ bookId: id, postType: 1, page: 1, size: 10 }),
+            getPosts({ bookId: id, postType: 2, page: 1, size: 10 }),
+          ]);
+        setDetailData(detailData);
+
+        const bookIntro = {
+          detailNum: detailData?.detailNum,
+          introduce: detailData?.introduce,
+        };
+        const result = [bookIntro].concat(studyData, reportData, reviewData);
+        if (isNewReview) result[3] = await fetchNewReviews();
+        setTabData(result);
+      } catch (error) {}
+    };
+    fetchData();
+  }, [isNewReview]);
 
   return (
     <div className={styles.detail}>
@@ -101,20 +129,27 @@ const DetailPage = () => {
             </div>
           </div>
           <div className={`${styles.buttonWrapper} ${styles.leftAlign}`}>
-            <button className={styles.findCount}>
+            <button className={styles.findCount} onClick={clickFindBookBtn}>
               <img src={bookIcon}></img>
               책을 찾습니다 ({detailData.findCount})명
             </button>
-            <button className={styles.shareButton}>
-              {detailData.isShare ? '책 공유하기' : '책 공유하기'}{' '}
+            <button className={styles.shareButton} onClick={clickShareBookBtn}>
+              {detailData.isShare ? '책 공유하기' : '책 공유하기'}
             </button>
-            <button className={styles.shareButton}>
+            <button className={styles.shareButton} onClick={clickGetBookBtn}>
               {detailData.isFind ? '책 공유받기' : '책 공유받기'}
             </button>
           </div>
         </div>
       </div>
-      <DetailTab tabData={tabData}></DetailTab>
+      <DetailTab
+        tabData={tabData}
+        token={token}
+        param={id}
+        tabValue={tabValue}
+        setTabValue={setTabValue}
+        setIsNewReview={setIsNewReview}
+      ></DetailTab>
     </div>
   );
 };

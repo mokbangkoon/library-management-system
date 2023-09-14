@@ -4,9 +4,12 @@ import App from './App.tsx';
 import './index.css';
 import CategoryPage from './pages/CategoryPage.tsx';
 import CommunityPage from './pages/CommunityPage.tsx';
+import ReportPage from './pages/community/ReportPage.tsx';
+import StudyPage from './pages/community/StudyPage.tsx';
 import DetailPage from './pages/detail/DetailPage.tsx';
+import LoginPage from './pages/login/LoginPage.tsx';
 import MainPage from './pages/main/MainPage.tsx';
-import MyBookPage from './pages/MyBook.Page.tsx';
+import MyBookPage from './pages/my-book/MyBook.Page.tsx';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +36,20 @@ const router = createBrowserRouter([
       {
         path: '/community',
         element: <CommunityPage />,
+        children: [
+          {
+            path: 'study',
+            element: <StudyPage />,
+          },
+          {
+            path: 'report',
+            element: <ReportPage />,
+          },
+        ],
+      },
+      {
+        path: '/login',
+        element: <LoginPage />,
       },
     ],
   },

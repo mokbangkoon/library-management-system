@@ -39,3 +39,9 @@ export type postParam = {
   bookId: number;
   postType: number;
 };
+
+export type reviewRegisterParam = {
+  bookId: number;
+  content: string;
+  rating: number;
+};
