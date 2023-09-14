@@ -5,7 +5,6 @@ import com.example.bookAPI.domain.Role;
 import com.example.bookAPI.repository.RoleRepository;
 import com.example.bookAPI.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +25,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Member findByEmail(String email) {
-        return memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("not found member"));
+    public Optional<Member> findByEmail(String email) {
+        return memberRepository.findByEmail(email);
     }
     @Transactional(readOnly = true)
     public Optional<Member> getMember(Long memberId){

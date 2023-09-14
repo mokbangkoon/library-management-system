@@ -53,26 +53,27 @@ public class ReviewController {
         }
 
         String token = request.getHeader(JwtProperties.HEADER_STRING);
-
         Long memberId = jwtTokenizer.getUserIdFromToken(token);
 
         Optional<Member> optionalMember = memberService.getMember(memberId);
         Optional<Book> optionalBook = bookService.getBook(reviewRequestDto.getBook_id());
         if(optionalMember.isEmpty() || optionalBook.isEmpty()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        Optional<Review> existedReview = reviewService.getReviewByMemberID(memberId, reviewRequestDto.getBook_id());
+        if(existedReview.isPresent()){
+            return new ResponseEntity(HttpStatus.CONFLICT);
         } else {
             Member member = optionalMember.get();
             Book book = optionalBook.get();
 
             Review review = new Review();
-
             review.setMember(member);
             review.setBook(book);
             review.setContent(reviewRequestDto.getContent());
             review.setRating(reviewRequestDto.getRating());
 
             Review saveReview = reviewService.saveReview(review);
-
             ReviewResponseDto reviewResponseDto = ReviewResponseDto.builder()
                     .bookId(book.getBookId())
                     .content(saveReview.getContent())

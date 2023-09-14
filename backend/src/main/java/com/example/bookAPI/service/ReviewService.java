@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -22,5 +24,10 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public Page<ReviewBookResponseDto> getReviewsByBookId(Long bookId, PageRequest pageable) {
         return reviewRepository.getReviewsByBookId(bookId, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Review> getReviewByMemberID(Long memberId, Long bookId) {
+        return reviewRepository.getReviewByMemberID(memberId, bookId);
     }
 }
