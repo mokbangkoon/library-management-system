@@ -17,7 +17,7 @@ export type loginParm = {
 };
 
 export type categoryParam = {
-  categoryId: string;
+  categoryId: number;
   subCategory?: string;
   page: number;
   size: number;
