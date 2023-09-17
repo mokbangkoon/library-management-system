@@ -1,35 +1,30 @@
 import { useState } from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import { DropdownProps, Select } from 'semantic-ui-react';
-import './selectBoxStyles.css';
+import './sortBoxStlyes.css';
 
-const SearchSelectBox = ({ setFilter }) => {
+const SortSelectBox = ({ setFilter }) => {
   const [isOpen, setIsOpen] = useState(false);
   const options = [
     {
       key: '1',
-      value: '1',
-      text: '통합검색',
+      value: 1,
+      text: '제목순',
     },
     {
       key: '2',
-      value: '2',
-      text: '제목',
+      value: 2,
+      text: '구매일순',
     },
     {
       key: '3',
-      value: '3',
-      text: '저자',
+      value: 3,
+      text: '평점순',
     },
     {
       key: '4',
-      value: '4',
-      text: '출판사',
-    },
-    {
-      key: '5',
-      value: '5',
-      text: '책소개',
+      value: 4,
+      text: '조회순',
     },
   ];
 
@@ -40,12 +35,12 @@ const SearchSelectBox = ({ setFilter }) => {
     setFilter(Number(data?.value));
   };
   return (
-    <div>
+    <div className="w-2/12">
       <Select
         className={
           isOpen
-            ? '!rounded-[1.5rem] !border-[#495057]'
-            : '!rounded-[6.25rem]  !border-[#495057]'
+            ? '!rounded-[0.5rem] !border-[#495057]'
+            : '!rounded-[0.5rem]  !border-[#495057]'
         }
         options={options}
         defaultValue={options[0].value}
@@ -56,4 +51,4 @@ const SearchSelectBox = ({ setFilter }) => {
     </div>
   );
 };
-export default SearchSelectBox;
+export default SortSelectBox;

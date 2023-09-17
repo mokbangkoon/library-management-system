@@ -24,7 +24,7 @@ export type categoryParam = {
 };
 
 export type categoryCountParam = {
-  categoryId: string;
+  categoryId: number;
 };
 
 export type reviewParam = {

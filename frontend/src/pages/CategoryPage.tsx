@@ -11,6 +11,8 @@ import { Category } from '@src/apis/enum';
 import { Button } from '@mui/material';
 import CategoryModal from '@src/components/Modal/CategoryModal';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import SubCategoryList from './list/SubCategoryList';
+import SortSelectBox from '@src/components/Common/SelectBox/SortSelectBox';
 const CategoryPage = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -28,9 +30,8 @@ const CategoryPage = () => {
           page: 1,
           size: 20,
         });
-        console.log(params.id);
-
         setCategoryTitle(categoryCountResponse);
+        setSubCategoryList(subCategoryCountResponse);
 
         categoryCountResponse.forEach(
           (el: { name: string; count: number }, idx: number) => {
@@ -40,8 +41,6 @@ const CategoryPage = () => {
           },
         );
         setBookList(bookListData);
-
-        console.log(bookListData);
       } catch (error) {
         console.error('Error fetching data', error);
       }
@@ -55,6 +54,8 @@ const CategoryPage = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [categoryTitle, setCategoryTitle] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [subCategoryList, setSubCategoryList] = useState([]);
+  const [filter, setFilter] = useState(1);
 
   const oncClose = (target) => {
     setIsOpenModal(false);
@@ -80,6 +81,8 @@ const CategoryPage = () => {
       ) : (
         ''
       )}
+      <SubCategoryList subCategoryList={subCategoryList} />
+      <SortSelectBox setFilter={setFilter} />
       <BookListPage bookList={bookList} />
     </div>
   );

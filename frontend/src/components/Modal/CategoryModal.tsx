@@ -32,11 +32,12 @@ const BookListPage = ({ categoryTitle, selectedCategory, onClose }) => {
           defaultValue={selectedValue}
         >
           {categoryTitle
-            ? categoryTitle.map((title) => (
+            ? categoryTitle.map((title, idx) => (
                 <FormControlLabel
+                  key={idx}
                   value={title.name}
                   control={<Radio />}
-                  label={title.name}
+                  label={`${title.name} (${title.count})`}
                 />
               ))
             : null}
