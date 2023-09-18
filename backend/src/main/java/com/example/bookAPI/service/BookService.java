@@ -242,7 +242,7 @@ public class BookService {
         return bookRepository.countBySubCategory(categoryName);
     }
 
-    public BookDetailResponseDto getBookById(Long bookId, Long memberId) {
-        return bookRepository.findByIdAndMemberId(bookId, memberId);
+    public BookDetailResponseDto getBookById(Long bookId) {
+        return bookRepository.findByIdAndMemberId(bookId);
     }
 }

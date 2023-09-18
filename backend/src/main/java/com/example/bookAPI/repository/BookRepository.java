@@ -96,8 +96,10 @@ public interface BookRepository extends JpaRepository<Book,Long> {
 
     @Query(value = "SELECT new com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResponseDto(b.bookId, b.title, b.writer, b.publisher, b.img) " +
             "FROM Book b " +
-            "JOIN b.bookShares bs " +
-            "WHERE bs.bookStatus = 1"
+            "LEFT JOIN b.bookShares bs ON b.bookId = bs.book.bookId AND bs.isDeleted = false "+
+            "WHERE bs.bookStatus.bookStatusId = 3 " +
+            "GROUP BY b.bookId " +
+            "ORDER BY MAX(bs.createDateTime) DESC"
     )
     Page<BookShareAndFindResponseDto> findMainBookByShared(PageRequest pageable);
 
@@ -113,8 +115,10 @@ public interface BookRepository extends JpaRepository<Book,Long> {
 
     @Query(value = "SELECT new com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResponseDto(b.bookId, b.title, b.writer, b.publisher, b.img) " +
             "FROM Book b " +
-            "JOIN b.bookShares bs " +
-            "WHERE bs.bookStatus = 3"
+            "LEFT JOIN b.bookShares bs ON b.bookId = bs.book.bookId AND bs.isDeleted = false "+
+            "WHERE bs.bookStatus.bookStatusId = 1 " +
+            "GROUP BY b.bookId " +
+            "ORDER BY MAX(bs.createDateTime) DESC"
     )
     Page<BookShareAndFindResponseDto> findMainBookByFound(PageRequest pageable);
 
@@ -122,7 +126,7 @@ public interface BookRepository extends JpaRepository<Book,Long> {
             "COUNT(bs.sharer_id) AS shareCount, " +
             "COUNT(bs.requester_id) AS findCount " +
             "FROM book b " +
-            "LEFT JOIN book_share AS bs ON bs.book_id = b.book_id " +
+            "LEFT JOIN book_share AS bs ON bs.book_id = b.book_id" +
             "WHERE bs.book_status_id = 3 " +
             "GROUP BY b.book_id " , nativeQuery = true
     )
@@ -225,25 +229,22 @@ public interface BookRepository extends JpaRepository<Book,Long> {
             "b.publisher, " +
             "b.subtitle, " +
             "CONCAT(main.name, ' > ', sub.name, ' > ', detail.name), " +
-            "COUNT(bs.sharerId.memberId), " +
-            "COUNT(bs.requesterId.memberId), " +
             "coalesce(avg(br.rating),0), " +
-            "COUNT(br.reviewId), " +
+            "COUNT(distinct br.reviewId), " +
             "b.publishDate, " +
             "b.count, " +
             "b.detailNum, " +
             "b.introduce, " +
             "b.isEbook, " +
-            "CASE WHEN MIN(bs.sharerId.memberId) = :memberId THEN TRUE ELSE FALSE END, " +
-            "CASE WHEN MIN(bs.requesterId.memberId) = :memberId THEN TRUE ELSE FALSE END ) " +
+            "CASE WHEN MIN(bs.sharerId.memberId) IS NOT NULL AND MIN(bs.sharerId.memberId) IS NOT NULL THEN TRUE ELSE FALSE END ) " +
             "FROM Book b " +
             "JOIN b.category detail " +
-            "LEFT JOIN b.reviews br " +
+            "LEFT JOIN b.reviews br ON b.bookId = br.book.bookId AND br.isDeleted = false " +
             "LEFT JOIN detail.parentCategory sub " +
             "LEFT JOIN sub.parentCategory main " +
-            "LEFT JOIN b.bookShares bs " +
+            "LEFT JOIN b.bookShares bs ON b.bookId = bs.book.bookId AND bs.isDeleted = false "+
             "WHERE b.bookId = :bookId " +
             "GROUP BY b.bookId "
     )
-    BookDetailResponseDto findByIdAndMemberId(@Param("bookId") Long bookId, @Param("memberId") Long memberId);
+    BookDetailResponseDto findByIdAndMemberId(@Param("bookId") Long bookId);
 }

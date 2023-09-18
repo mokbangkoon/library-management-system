@@ -23,4 +23,13 @@ public class RefreshToken {
 
     @Column(columnDefinition = "VARCHAR(1000)")
     private String value;
+
+    @Override
+    public String toString() {
+        return "RefreshToken{" +
+                "id=" + id +
+                ", member=" + member +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

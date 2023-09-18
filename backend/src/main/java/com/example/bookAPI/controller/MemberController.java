@@ -107,12 +107,17 @@ public class MemberController {
         String refreshToken = jwtTokenizer.createRefreshToken(member.get().getMemberId(), member.get().getEmail(), member.get().getName(), roles);
 
         Optional<RefreshToken> refreshTokenByMemberId = refreshTokenService.findRefreshTokenByMemberId(member.get().getMemberId());
+        RefreshToken refreshTokenEntity = new RefreshToken();
         if(refreshTokenByMemberId.isEmpty()){
-            RefreshToken refreshTokenEntity = new RefreshToken();
             refreshTokenEntity.setValue(refreshToken);
             refreshTokenEntity.setMember(member.get());
-            refreshTokenService.addRefreshToken(refreshTokenEntity);
+        } else {
+            refreshTokenEntity.setId(refreshTokenByMemberId.get().getId());
+            refreshTokenEntity.setValue(refreshToken);
+            refreshTokenEntity.setMember(member.get());
         }
+        refreshTokenService.addRefreshToken(refreshTokenEntity);
+
         MemberLoginResponseDto memberLoginResponseDto = MemberLoginResponseDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -133,6 +138,7 @@ public class MemberController {
     @Operation(summary = "접근 토큰 재발급", description = "리프레시 토큰으로 접근 토큰 연장하기")
     @PostMapping("/refreshToken")
     public ResponseEntity refreshToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto){
+
         RefreshToken refreshToken = refreshTokenService.findRefreshToken(refreshTokenRequestDto.getRefreshToken()).orElseThrow(() -> new IllegalArgumentException("RefreshToken not Found"));
         Claims claims = jwtTokenizer.parseRefreshToken(refreshToken.getValue());
 
