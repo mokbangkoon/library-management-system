@@ -1,17 +1,15 @@
-import { login } from '@apis/api';
+import { activeSign } from '@stores/signInSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-const LoginButton = ({ authenticated, setUser }) => {
+const LoginButton = ({ authenticated }) => {
+  const navigateTo = useNavigate();
+  const dispatch = useDispatch();
   const clickLogin = async (e, authenticated) => {
     if (!authenticated) {
-      const res = await login({
-        email: 'minjae2246@gmail.com',
-        password: '1234qwer@',
-      });
-      setUser({ name: res.name });
-      localStorage.setItem('access-token', res.accessToken);
-      localStorage.setItem('refresh-token', res.refreshToken);
+      navigateTo('/login');
     } else {
-      setUser(null);
+      dispatch(activeSign());
       localStorage.removeItem('access-token');
       localStorage.removeItem('refresh-token');
     }
