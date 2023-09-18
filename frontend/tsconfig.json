@@ -25,6 +25,9 @@
       "@apis/*": [
         "src/apis/*"
       ],
+      "@stores/*": [
+        "src/stores/*"
+      ],
     },
 
     /* Bundler mode */

@@ -8,10 +8,13 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { activeSign } from '@stores/signInSlice';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,6 +27,7 @@ export default function LoginPage() {
     if (res) {
       localStorage.setItem('access-token', res.accessToken);
       localStorage.setItem('refresh-token', res.refreshToken);
+      dispatch(activeSign());
       navigate(-1); // 이전 경로로 돌아가기
     }
   };
