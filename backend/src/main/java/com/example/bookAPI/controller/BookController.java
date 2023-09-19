@@ -17,7 +17,6 @@ import com.example.bookAPI.dto.book.search.BookSearchResponseDto;
 import com.example.bookAPI.dto.book.search.BookSearchResult;
 import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResponseDto;
 import com.example.bookAPI.dto.book.shareAndFind.BookShareAndFindResult;
-import com.example.bookAPI.security.jwt.token.JwtProperties;
 import com.example.bookAPI.security.jwt.util.JwtTokenizer;
 import com.example.bookAPI.service.BookService;
 import io.swagger.annotations.Api;
@@ -99,8 +98,8 @@ public class BookController {
     public BookShareAndFindResult getShareAndFindBooks(
             @Parameter(description = "조회 페이지", example = "1")
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
-            @Parameter(description = "조회 사이즈", example = "6")
-            @RequestParam(value = "size", defaultValue = "6", required = false) int size,
+            @Parameter(description = "조회 사이즈", example = "4")
+            @RequestParam(value = "size", defaultValue = "4", required = false) int size,
             @Parameter(description ="API 타입 여부", example = "1", required = true)
             @RequestParam(value = "type", defaultValue = "1", required = true) int type
     ){
@@ -183,8 +182,6 @@ public class BookController {
     public BookDetailResponseDto getBook(
             @Parameter(description = "책 id", required = true) @PathVariable(name = "bookId", required = true) Long bookId
             ) {
-        String token = request.getHeader(JwtProperties.HEADER_STRING);
-        Long memberId = token == null ? 0 : jwtTokenizer.getUserIdFromToken(token);
-        return bookService.getBookById(bookId, memberId);
+        return bookService.getBookById(bookId);
     }
 }

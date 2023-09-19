@@ -1,3 +1,5 @@
+import ReviewInput from '@components/Common/Input/ReviewInput/ReviewInput.tsx';
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import StarIcon from '@mui/icons-material/Star';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
@@ -5,10 +7,15 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import moment from 'moment';
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './detailTab.module.css';
 
 const renderReviews = (reviews) => {
-  if (reviews.length === 0) return <div>등록된 리뷰가 없습니다.</div>;
+  if (reviews.length === 0) return (
+    <div className={styles.noContent}>
+      <span>등록된 리뷰가 없어요.</span>
+    </div>
+  );
   return reviews.map((review, idx) => (
     <div key={idx}>
       <h2>{review.name}</h2>
@@ -28,9 +35,23 @@ const renderReviews = (reviews) => {
   ));
 };
 
-const renderPosts = (posts, index) => {
+const renderPosts = (posts, index, link) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   if (posts.length === 0)
-    return <div>등록된 {index === 2 ? '감상평' : '스터디'}가 없습니다.</div>;
+    return (
+      <div className={styles.noContent_v2}>
+        <div className={styles.noContent}>
+          등록된 {index === 2 ? '감상평' : '스터디'}가 없어요.
+        </div>
+        <button
+          className={styles.linkCommunity}
+          onClick={() => link(`/community/${index === 2 ? 'report' : 'study'}`)}
+        >
+          첫 번째 {index === 2 ? ' 감상평  작성하기' : ' 스터디 모집하기'}
+          <EditTwoToneIcon />
+        </button>
+      </div>
+    );
 
   return posts.map((post, idx) => (
     <div key={idx} className={styles.post}>
@@ -51,11 +72,18 @@ const renderPosts = (posts, index) => {
   ));
 };
 
-function DetailTab({ tabData }) {
+function DetailTab({
+  tabData,
+  token,
+  param,
+  tabValue,
+  setTabValue,
+  setIsNewReview,
+}) {
+  const navigateTo = useNavigate();
   const [intro, study, report, review] = tabData;
-  const [value, setValue] = React.useState('책 소개');
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
   };
 
   const getTabStyle = () => ({
@@ -69,31 +97,27 @@ function DetailTab({ tabData }) {
     },
   });
 
-  
   const tabItems = [
-    { value: '책 소개', label: '책 소개', dataKey: 0 },
+    { label: '책 소개', tabValue: 0 },
     {
-      value: '스터디',
       label: `스터디 (${study?.posts?.length || 0})`,
-      dataKey: 1,
+      tabValue: 1,
     },
     {
-      value: '감상평',
       label: `감상평 (${report?.posts?.length || 0})`,
-      dataKey: 2,
+      tabValue: 2,
     },
     {
-      value: '리뷰',
       label: `리뷰 (${review?.reviews?.length || 0})`,
-      dataKey: 3,
+      tabValue: 3,
     },
   ];
-  
+
   return (
     <Box>
       <Tabs
         className={styles.detailTab}
-        value={value}
+        value={tabValue}
         onChange={handleChange}
         textColor="inherit"
         TabIndicatorProps={{
@@ -106,14 +130,14 @@ function DetailTab({ tabData }) {
       >
         {tabItems.map((item) => (
           <Tab
-            key={item.value}
-            value={item.value}
+            key={item.tabValue}
+            value={item.tabValue}
             label={item.label}
             sx={getTabStyle()}
           />
         ))}
       </Tabs>
-      {value === '책 소개' && (
+      {tabValue === 0 && (
         <Box sx={{ padding: '44px 0 0 0' }}>
           <h2 className={styles.title}>책 소개</h2>
           <p className={styles.introduce}>
@@ -137,20 +161,26 @@ function DetailTab({ tabData }) {
         </Box>
       )}
 
-      {value === '스터디' && (
+      {tabValue === 1 && (
         <Box sx={{ padding: '44px 0 0 0', display: 'flex' }}>
-          {renderPosts(study?.posts, 2)}
+          {renderPosts(study?.posts, 2, navigateTo)}
         </Box>
       )}
 
-      {value === '감상평' && (
+      {tabValue === 2 && (
         <Box sx={{ padding: '44px 0 0 0', display: 'flex' }}>
-          {renderPosts(report?.posts, 3)}
+          {renderPosts(report?.posts, 3, navigateTo)}
         </Box>
       )}
 
-      {value === '리뷰' && (
+      {tabValue === 3 && (
         <Box sx={{ padding: '44px 0 0 0' }}>
+          <ReviewInput
+            token={token}
+            bookId={param}
+            setTabValue={setTabValue}
+            setIsNewReview={setIsNewReview}
+          />
           {renderReviews(review?.reviews)}
         </Box>
       )}

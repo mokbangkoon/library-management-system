@@ -23,9 +23,11 @@ export interface bookDetail extends bookList {
   detailNum: string;
   findCount: number;
   introduce: string;
-  isEBook: true;
-  isFind: true;
-  isShare: true;
+  isEBook: boolean;
+  isFind: boolean;
+  isShare: boolean;
+  isBeShared: boolean;
+  isDoneShared: boolean;
   publishDate: string;
   subtitle: string;
 }

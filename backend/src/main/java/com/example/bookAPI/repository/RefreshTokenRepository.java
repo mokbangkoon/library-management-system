@@ -11,6 +11,6 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long
     Optional<RefreshToken> findByValue(String value);
 
 
-    @Query("select r.value from RefreshToken  r where  r.member.memberId = :memberId")
+    @Query("select r from RefreshToken r where  r.member.memberId = :memberId")
     Optional<RefreshToken> findByMemberId(@Param("memberId") Long memberId);
 }

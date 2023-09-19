@@ -37,7 +37,6 @@ public class BookShare extends ContentEntity {
     @JoinColumn(name = "book_status_id")
     private BookStatus bookStatus;
 
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "content_id")
     private Content contents;
