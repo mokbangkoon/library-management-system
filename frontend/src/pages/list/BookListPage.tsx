@@ -1,11 +1,20 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const BookListPage = ({ bookList }) => {
+  const navigate = useNavigate();
+  const clickBook = (id: number) => {
+    navigate(`/book/${id}`);
+  };
   return (
     <div className="grid grid-cols-4 grid-flow-row gap-5">
       {bookList ? (
         bookList.map((el, idx) => (
-          <div key={idx}>
+          <div
+            key={idx}
+            onClick={() => clickBook(el.id)}
+            className="hover:cursor-pointer"
+          >
             <div>
               <img src={el.img} alt="책 이미지" />
             </div>

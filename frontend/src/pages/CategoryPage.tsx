@@ -125,9 +125,9 @@ const CategoryPage = () => {
     }
   };
 
-  const oncClose = (target) => {
+  const oncClose = (target, _subCategory = '') => {
     setIsOpenModal(false);
-    navigate(`/category/${Category[target]}`);
+    _subCategory ? null : navigate(`/category/${Category[target]}`);
   };
 
   return (
@@ -154,7 +154,7 @@ const CategoryPage = () => {
       >
         {selectedCategory}
       </Button>
-      <div className="flex justify-center align-middle">
+      <div className="flex justify-center items-center">
         {isOpenModal ? (
           <CategoryModal
             categoryTitle={categoryTitle}
@@ -172,7 +172,7 @@ const CategoryPage = () => {
       <SortSelectBox setFilter={setFilter} />
       <BookListPage bookList={bookList} />
       <div className="flex justify-center" ref={observerRef}>
-        {isLast ? null : <CircularProgress />}
+        {isLast || bookList.length < 20 ? null : <CircularProgress />}
       </div>
     </div>
   );

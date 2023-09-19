@@ -44,8 +44,8 @@ const SearchSelectBox = ({ setFilter }) => {
       <Select
         className={
           isOpen
-            ? '!rounded-[1.5rem] !border-[#495057]'
-            : '!rounded-[6.25rem]  !border-[#495057]'
+            ? '!rounded-[1.5rem] !border-[#495057] font-R'
+            : '!rounded-[6.25rem]  !border-[#495057] font-R'
         }
         options={options}
         defaultValue={options[0].value}
