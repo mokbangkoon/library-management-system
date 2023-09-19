@@ -71,20 +71,9 @@ public class Member extends TimeEntity {
     @OneToOne(mappedBy = "member")
     private Login login;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
-
-    @Override
-    public String toString() {
-        return "Member{" +
-                "memberId=" + memberId +
-                ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", activated=" + activated +
-                '}';
-    }
 
     public void addRole(Role role){
         roles.add(role);
