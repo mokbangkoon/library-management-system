@@ -35,7 +35,7 @@ const SortSelectBox = ({ setFilter }) => {
     setFilter(Number(data?.value));
   };
   return (
-    <div className="w-2/12">
+    <div className="w-2/12 mt-8 mb-12 font-B text-xl">
       <Select
         className={
           isOpen

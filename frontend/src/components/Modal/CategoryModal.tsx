@@ -20,13 +20,31 @@ const BookListPage = ({ categoryTitle, selectedCategory, onClose }) => {
     setSelectedValue(event.target.value);
     onClose(event.target.value);
   };
+
   return (
     <Dialog open={true} sx={{ maxHeight: 500 }}>
-      <DialogTitle>카테고리</DialogTitle>
+      <DialogTitle
+        sx={{
+          color: '#868E96',
+          fontFamily: 'Pretendard-Bold',
+          paddingBottom: '28px',
+        }}
+      >
+        카테고리
+      </DialogTitle>
       <FormControl>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
           defaultValue="female"
+          sx={{
+            width: '30rem',
+            maxHeight: '33rem',
+            display: 'flex',
+            flexWrap: 'nowrap',
+            marginLeft: '1.715rem',
+            color: '#868E96',
+            fontFamily: 'Pretendard-Regular',
+          }}
           name="radio-buttons-group"
           onChange={(event) => handleListItemClick(event)}
           defaultValue={selectedValue}
@@ -34,6 +52,17 @@ const BookListPage = ({ categoryTitle, selectedCategory, onClose }) => {
           {categoryTitle
             ? categoryTitle.map((title, idx) => (
                 <FormControlLabel
+                  sx={{
+                    marginBottom: '1.5rem',
+                    alignItems: 'center',
+                    display: 'flex',
+                    '& .MuiRadio-root': {
+                      color: '#FFA500',
+                      '&.Mui-checked': {
+                        color: '#FFFFFF',
+                      },
+                    },
+                  }}
                   key={idx}
                   value={title.name}
                   control={<Radio />}

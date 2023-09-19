@@ -109,7 +109,7 @@ export const getBook = async (params: detailParam) => {
     if (error.message == 'Request failed with status code 401') {
       await refreshToken();
     }
-      console.error('Error fetching data', error);
+    console.error('Error fetching data', error);
   }
 };
 
@@ -134,23 +134,25 @@ export const getShareFindInfo = async (params: detailParam) => {
 export const refreshToken = async () => {
   const refreshToken = localStorage.getItem('refresh-token');
   try {
-       const response = await axios.post(
-         `http://localhost:8080/member/refreshToken`,
-         {
-           refreshToken,
-         },
-       );
+    const response = await axios.post(
+      `http://localhost:8080/member/refreshToken`,
+      {
+        refreshToken,
+      },
+    );
     console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching data', error);
   }
-}
+};
 
 export const getReviews = async (params: reviewParam) => {
   const { page, size, bookId } = params;
   try {
-    const response = await axios.get(`http://localhost:8080/reviews/${bookId}?page=${page}&size=${size}`);
+    const response = await axios.get(
+      `http://localhost:8080/reviews/${bookId}?page=${page}&size=${size}`,
+    );
     return response.data;
   } catch (error) {
     console.error('Error fetching data', error);
@@ -182,9 +184,9 @@ export const postReview = async (params: reviewRegisterParam) => {
       },
       {
         headers: {
-          Authorization: token && `Bearer ${token}`
+          Authorization: token && `Bearer ${token}`,
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -192,28 +194,27 @@ export const postReview = async (params: reviewRegisterParam) => {
   }
 };
 
-export const shareBook =async (params:type) => {
-    const token = localStorage.getItem('access-token');
-    const { bookId, bookStatusId } = params;
-    try {
-      const response = await axios.post(
-        `http://localhost:8080/book-share`,
-        {
-          bookId,
-          bookStatusId
+export const shareBook = async (params: type) => {
+  const token = localStorage.getItem('access-token');
+  const { bookId, bookStatusId } = params;
+  try {
+    const response = await axios.post(
+      `http://localhost:8080/book-share`,
+      {
+        bookId,
+        bookStatusId,
+      },
+      {
+        headers: {
+          Authorization: token && `Bearer ${token}`,
         },
-        {
-          headers: {
-            Authorization: token && `Bearer ${token}`,
-          },
-        },
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching data', error);
-    }
-
-}
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data', error);
+  }
+};
 
 export const login = async (params: loginParm) => {
   try {
