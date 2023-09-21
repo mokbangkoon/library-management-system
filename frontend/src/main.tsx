@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client';
-import { Provider } from "react-redux";
+import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App.tsx';
 import './index.css';
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
         element: <DetailPage />,
       },
       {
-        path: '/category/:id/',
+        path: '/category/:id/*',
         element: <CategoryPage />,
       },
       {
