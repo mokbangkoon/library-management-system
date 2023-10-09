@@ -63,6 +63,17 @@ const MainTab = () => {
         >
           투데이
         </Link>
+        <Link
+          to={`/category/${Category['경제/경영']}`}
+          className={
+            isActive['category']
+              ? 'tab-active tab tab-bordered h-full !border-[#FF6600] text-[#FF6600] text-xl'
+              : 'tab text-[#868E96] text-xl'
+          }
+          onClick={() => clickTab('category')}
+        >
+          카테고리
+        </Link>
 
         <Link
           to="/community"
@@ -86,18 +97,6 @@ const MainTab = () => {
           onClick={() => clickTab('myBook')}
         >
           내서재
-        </Link>
-
-        <Link
-          to={`/category/${Category['경제/경영']}`}
-          className={
-            isActive['category']
-              ? 'tab-active tab tab-bordered h-full !border-[#FF6600] text-[#FF6600] text-xl'
-              : 'tab text-[#868E96] text-xl'
-          }
-          onClick={() => clickTab('category')}
-        >
-          카테고리
         </Link>
       </div>
     </div>

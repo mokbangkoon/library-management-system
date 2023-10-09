@@ -17,7 +17,7 @@ import ShareAndBookCard from '@components/Common/Card/shareAndBook/ShareAndBookC
 import TeamBookCard from '@components/Common/Card/teamBook/TeamBookCard';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
@@ -84,6 +84,7 @@ const MainBook = ({
     prevArrow: <PrevButton />,
   };
   const param: mainParam = { type: 2, page: 1, size: 20, teamId: teamIdx };
+  const navigate = useNavigate();
 
   const clickMoreBtn = async (
     event: React.MouseEvent<HTMLSpanElement>,
@@ -91,21 +92,39 @@ const MainBook = ({
   ) => {
     switch (type) {
       case 'purchased':
+        navigate(
+          `/books/purchased?type=${param.type}&page=${param.page}&size=${param.size}`,
+        );
         await getPurchasedBooks(param);
         break;
       case 'best':
+        navigate(
+          `/books/best?type=${param.type}&page=${param.page}&size=${param.size}`,
+        );
         await getBestBooks(param);
         break;
       case 'share':
+        navigate(
+          `/books/share?type=${param.type}&page=${param.page}&size=${param.size}`,
+        );
         await getShareAndFindBooks(param);
         break;
       case 'find':
+        navigate(
+          `/books/find?type=${param.type}&page=${param.page}&size=${param.size}`,
+        );
         await getShareAndFindBooks(param);
         break;
       case 'review':
+        navigate(
+          `/books/review?type=${param.type}&page=${param.page}&size=${param.size}`,
+        );
         await getReviewBooks(param);
         break;
       case 'team':
+        navigate(
+          `/books/team?type=${param.type}&teamId=${param.teamId}&page=${param.page}&size=${param.size}`,
+        );
         await getTeamBooks(param);
         break;
       default:
@@ -235,11 +254,11 @@ const MainBook = ({
               const Component = componentMap[type];
               return loading ? (
                 <div key={book.id}></div>
-              ) : type == 'best' || type =='team' ? (
+              ) : type == 'best' || type == 'team' ? (
                 <Link
                   to={`/book/${book.id}`}
-                    style={{ color: 'inherit', textDecoration: 'inherit' }}
-                    key={book.id}
+                  style={{ color: 'inherit', textDecoration: 'inherit' }}
+                  key={book.id}
                 >
                   <Component
                     idx={idx}
