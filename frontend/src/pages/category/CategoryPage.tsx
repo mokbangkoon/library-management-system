@@ -134,52 +134,54 @@ const CategoryPage = () => {
   };
 
   return (
-    <div className="max-w-[75rem] m-auto relative z-0">
+    <div>
       <TitleText title={title} subTitle={totalCount} />
-      <div className="relative">
-        <Button
-          sx={{
-            fontFamily: 'Pretendard-Bold',
-            color: '#212529',
-            fontSize: '2rem',
-            marginBottom: '2rem',
-          }}
-          variant="text"
-          onClick={() => setIsOpenModal(!isOpenModal)}
-          endIcon={<img src={expanded_arrow} alt="확장 화살표" />}
-        >
-          {selectedCategory}
-        </Button>
+      <div className="max-w-[75rem] m-auto relative z-0">
+        <div className="relative">
+          <Button
+            sx={{
+              fontFamily: 'Pretendard-Bold',
+              color: '#212529',
+              fontSize: '2rem',
+              marginBottom: '2rem',
+            }}
+            variant="text"
+            onClick={() => setIsOpenModal(!isOpenModal)}
+            endIcon={<img src={expanded_arrow} alt="확장 화살표" />}
+          >
+            {selectedCategory}
+          </Button>
 
-        <div className="z-50">
-          {isOpenModal ? (
-            <CategoryModal
-              categoryTitle={categoryTitle}
-              selectedCategory={selectedCategory}
-              onClose={onClose}
-            />
-          ) : (
-            ''
-          )}
+          <div className="z-50">
+            {isOpenModal ? (
+              <CategoryModal
+                categoryTitle={categoryTitle}
+                selectedCategory={selectedCategory}
+                onClose={onClose}
+              />
+            ) : (
+              ''
+            )}
+          </div>
         </div>
-      </div>
 
-      <SubCategoryList
-        subCategoryList={subCategoryList}
-        totalCount={totalCount}
-      />
-      <div className="flex justify-between m-auto p-3">
-        <div className="flex w-8/12 gap-4">
-          <YearSelectBox setFilter={setFilter} />
-          <MonthSelectBox setFilter={setFilter} />
+        <SubCategoryList
+          subCategoryList={subCategoryList}
+          totalCount={totalCount}
+        />
+        <div className="flex justify-between m-auto p-3">
+          <div className="flex w-8/12 gap-4">
+            <YearSelectBox setFilter={setFilter} />
+            <MonthSelectBox setFilter={setFilter} />
+          </div>
+          <div className="">
+            <SortSelectBox setFilter={setFilter} />
+          </div>
         </div>
-        <div className="">
-          <SortSelectBox setFilter={setFilter} />
+        <BookListPage bookList={bookList} />
+        <div className="flex justify-center" ref={observerRef}>
+          {isLast || bookList.length < 20 ? null : <CircularProgress />}
         </div>
-      </div>
-      <BookListPage bookList={bookList} />
-      <div className="flex justify-center" ref={observerRef}>
-        {isLast || bookList.length < 20 ? null : <CircularProgress />}
       </div>
     </div>
   );

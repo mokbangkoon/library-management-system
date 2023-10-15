@@ -80,7 +80,7 @@ const MonthSelectBox = ({ setFilter }) => {
     setFilter(Number(data?.value));
   };
   return (
-    <div className="w-2/12 mt-8 mb-12 font-R text-xl">
+    <div className="w-2/12  font-R text-xl">
       <Select
         className={
           isOpen
