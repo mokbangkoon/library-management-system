@@ -3,28 +3,38 @@ import 'semantic-ui-css/semantic.min.css';
 import { DropdownProps, Select } from 'semantic-ui-react';
 import './sortBoxStlyes.css';
 
-const SortSelectBox = ({ setFilter }) => {
+const YearSelectBox = ({ setFilter }) => {
   const [isOpen, setIsOpen] = useState(false);
   const options = [
     {
       key: '1',
       value: 1,
-      text: '제목순',
+      text: '2023년',
     },
     {
       key: '2',
       value: 2,
-      text: '구매일순',
+      text: '2022년',
     },
     {
       key: '3',
       value: 3,
-      text: '평점순',
+      text: '2021년',
     },
     {
       key: '4',
       value: 4,
-      text: '조회순',
+      text: '2020년',
+    },
+    {
+      key: '5',
+      value: 5,
+      text: '2019년',
+    },
+    {
+      key: '6',
+      value: 6,
+      text: '2018년',
     },
   ];
 
@@ -35,7 +45,7 @@ const SortSelectBox = ({ setFilter }) => {
     setFilter(Number(data?.value));
   };
   return (
-    <div className="w-3/12  font-R text-xl">
+    <div className="w-2/12 font-R text-xl">
       <Select
         className={
           isOpen
@@ -51,4 +61,4 @@ const SortSelectBox = ({ setFilter }) => {
     </div>
   );
 };
-export default SortSelectBox;
+export default YearSelectBox;

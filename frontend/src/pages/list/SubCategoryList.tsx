@@ -1,8 +1,20 @@
 import { useEffect, useState, useRef } from 'react';
 import { Tabs, Tab } from '@mui/material';
 import { useParams, useNavigate, useLocation } from 'react-router';
-import { auto } from '@popperjs/core';
 import Box from '@mui/material/Box';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  components: {
+    MuiTabs: {
+      styleOverrides: {
+        indicator: {
+          backgroundColor: '#212529',
+        },
+      },
+    },
+  },
+});
 
 const SubCategoryList = ({
   subCategoryList,
@@ -39,54 +51,55 @@ const SubCategoryList = ({
     navigate(`/category/${params.id}?page=1&subCategory=${'전체보기'}`);
   };
   return (
-    <Box sx={{ maxWidth: '100%' }}>
-      {subCategoryList ? (
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          textColor="inherit"
-          indicatorColor="#fff"
-          sx={{
-            borderBottom: '2px solid #E9ECEF',
-            '& .MuiTab-root': {
-              marginBottom: '0.285rem',
-              fontSize: '1.715rem',
-              fontFamily: 'Pretendard-Bold',
-              color: '#868E96',
-            },
-            '& .Mui-selected': {
-              fontWeight: 'bold',
-              color: '#212529',
-            },
-          }}
-          variant="scrollable"
-          scrollButtons
-          allowScrollButtonsMobile
-        >
-          {subCategoryList.map((el, idx) =>
-            idx === 0
-              ? [
-                  <Tab
-                    onClick={clickTotalCategory}
-                    label={`전체보기 (${totalCount})`}
-                  ></Tab>,
-                  <Tab
-                    onClick={() => clickSubCategory(el.name)}
-                    key={idx}
-                    label={`${el.name} (${el.count})`}
-                  ></Tab>,
-                ]
-              : [
-                  <Tab
-                    onClick={() => clickSubCategory(el.name)}
-                    key={idx}
-                    label={`${el.name} (${el.count})`}
-                  ></Tab>,
-                ],
-          )}
-        </Tabs>
-      ) : null}
-    </Box>
+    <ThemeProvider theme={theme}>
+      <Box sx={{ maxWidth: '100%' }}>
+        {subCategoryList ? (
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            textColor="inherit"
+            sx={{
+              borderBottom: '2px solid #E9ECEF',
+              '& .MuiTab-root': {
+                marginBottom: '0.285rem',
+                fontSize: '1.715rem',
+                fontFamily: 'Pretendard-Bold',
+                color: '#868E96',
+              },
+              '& .Mui-selected': {
+                fontWeight: 'bold',
+                color: '#212529',
+              },
+            }}
+            variant="scrollable"
+            scrollButtons
+            allowScrollButtonsMobile
+          >
+            {subCategoryList.map((el, idx) =>
+              idx === 0
+                ? [
+                    <Tab
+                      onClick={clickTotalCategory}
+                      label={`전체보기 (${totalCount})`}
+                    ></Tab>,
+                    <Tab
+                      onClick={() => clickSubCategory(el.name)}
+                      key={idx}
+                      label={`${el.name} (${el.count})`}
+                    ></Tab>,
+                  ]
+                : [
+                    <Tab
+                      onClick={() => clickSubCategory(el.name)}
+                      key={idx}
+                      label={`${el.name} (${el.count})`}
+                    ></Tab>,
+                  ],
+            )}
+          </Tabs>
+        ) : null}
+      </Box>
+    </ThemeProvider>
   );
 };
 export default SubCategoryList;

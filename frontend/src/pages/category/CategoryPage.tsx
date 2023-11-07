@@ -6,14 +6,17 @@ import {
 import TitleText from '@src/components/Common/TitleText';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import BookListPage from './list/BookListPage';
+import BookListPage from '../list/BookListPage';
 import { Category } from '@src/apis/enum';
 import { Button } from '@mui/material';
-import CategoryModal from '@src/components/Modal/CategoryModal';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import SubCategoryList from './list/SubCategoryList';
+import CategoryModal from '@src/components/Common/Modal/CategoryModal';
+import ExpandCircleDownOutlinedIcon from '@mui/icons-material/ExpandCircleDownOutlined';
+import SubCategoryList from '../list/SubCategoryList';
 import SortSelectBox from '@src/components/Common/SelectBox/SortSelectBox';
 import CircularProgress from '@mui/material/CircularProgress';
+import expanded_arrow from '../../assets/images/expanded_arrow.png';
+import YearSelectBox from '@src/components/Common/SelectBox/YearSelectBox';
+import MonthSelectBox from '@src/components/Common/SelectBox/MonthSelectBox';
 const CategoryPage = () => {
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
   const [subtitle, setSubtitle] = useState('');
@@ -125,54 +128,60 @@ const CategoryPage = () => {
     }
   };
 
-  const oncClose = (target, _subCategory = '') => {
+  const onClose = (target, _subCategory = '') => {
     setIsOpenModal(false);
     _subCategory ? null : navigate(`/category/${Category[target]}`);
   };
 
   return (
-    <div className="max-w-[75rem] m-auto">
+    <div>
       <TitleText title={title} subTitle={totalCount} />
-      <Button
-        sx={{
-          fontFamily: 'Pretendard-Bold',
-          color: '#212529',
-          fontSize: '2rem',
-          marginBottom: '2rem',
-        }}
-        variant="text"
-        onClick={() => setIsOpenModal(!isOpenModal)}
-        endIcon={
-          <KeyboardArrowDownIcon
+      <div className="max-w-[75rem] m-auto relative z-0">
+        <div className="relative">
+          <Button
             sx={{
-              color: '#CED4DA',
-              width: '1.715rem',
-              height: '1.715rem',
+              fontFamily: 'Pretendard-Bold',
+              color: '#212529',
+              fontSize: '2rem',
+              marginBottom: '2rem',
             }}
-          />
-        }
-      >
-        {selectedCategory}
-      </Button>
-      <div className="flex justify-center items-center">
-        {isOpenModal ? (
-          <CategoryModal
-            categoryTitle={categoryTitle}
-            selectedCategory={selectedCategory}
-            onClose={oncClose}
-          />
-        ) : (
-          ''
-        )}
-      </div>
-      <SubCategoryList
-        subCategoryList={subCategoryList}
-        totalCount={totalCount}
-      />
-      <SortSelectBox setFilter={setFilter} />
-      <BookListPage bookList={bookList} />
-      <div className="flex justify-center" ref={observerRef}>
-        {isLast || bookList.length < 20 ? null : <CircularProgress />}
+            variant="text"
+            onClick={() => setIsOpenModal(!isOpenModal)}
+            endIcon={<img src={expanded_arrow} alt="확장 화살표" />}
+          >
+            {selectedCategory}
+          </Button>
+
+          <div className="z-50">
+            {isOpenModal ? (
+              <CategoryModal
+                categoryTitle={categoryTitle}
+                selectedCategory={selectedCategory}
+                onClose={onClose}
+              />
+            ) : (
+              ''
+            )}
+          </div>
+        </div>
+
+        <SubCategoryList
+          subCategoryList={subCategoryList}
+          totalCount={totalCount}
+        />
+        <div className="flex justify-between m-auto p-3">
+          <div className="flex w-8/12 gap-4">
+            <YearSelectBox setFilter={setFilter} />
+            <MonthSelectBox setFilter={setFilter} />
+          </div>
+          <div className="">
+            <SortSelectBox setFilter={setFilter} />
+          </div>
+        </div>
+        <BookListPage bookList={bookList} />
+        <div className="flex justify-center" ref={observerRef}>
+          {isLast || bookList.length < 20 ? null : <CircularProgress />}
+        </div>
       </div>
     </div>
   );

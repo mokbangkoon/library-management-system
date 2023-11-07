@@ -1,4 +1,4 @@
 const CommunityPage = () => {
-  return <div>안녕</div>;
+  return <div>Community Page</div>;
 };
 export default CommunityPage;
